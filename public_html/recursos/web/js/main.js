@@ -506,3 +506,69 @@ Author Email:   contact@techydevs.com
     });
 
 })(jQuery);
+
+
+var q1 = "q1value";
+var q2 = "q2value";
+var q3 = "q3value";
+var q4 = "q4value";
+var q5 = "q5value";
+var q7 = "q7value";
+var q8 = "q8value";
+var q9 = "q9value";
+var q10 = "q10value";
+
+var radiobuttonq1 = document.getElementsByName("pregunta1Opciones");
+for (let i = 0; i < radiobuttonq1.length; i++) {
+    radiobuttonq1[i].addEventListener("click", function () {
+        document.getElementById(q1).value = radiobuttonq1[i].value;
+    });
+}
+var radiobuttonq2 = document.getElementsByName("pregunta2Opciones");
+for (let i = 0; i < radiobuttonq2.length; i++) {
+    radiobuttonq2[i].addEventListener("click", function () {
+        document.getElementById(q2).value = radiobuttonq2[i].value;
+    });
+}
+var radiobuttonq3 = document.getElementsByName("pregunta3Opciones");
+for (let i = 0; i < radiobuttonq3.length; i++) {
+    radiobuttonq3[i].addEventListener("click", function () {
+        document.getElementById(q3).value = radiobuttonq3[i].value;
+    });
+}
+var radiobuttonq4 = document.getElementsByName("pregunta4Opciones");
+for (let i = 0; i < radiobuttonq4.length; i++) {
+    radiobuttonq4[i].addEventListener("click", function () {
+        document.getElementById(q4).value = radiobuttonq4[i].value;
+    });
+}
+var radiobuttonq5 = document.getElementsByName("pregunta5Opciones");
+for (let i = 0; i < radiobuttonq5.length; i++) {
+    radiobuttonq5[i].addEventListener("click", function () {
+        document.getElementById(q5).value = radiobuttonq5[i].value;
+    });
+}
+var radiobuttonq7 = document.getElementsByName("pregunta7Opciones");
+for (let i = 0; i < radiobuttonq7.length; i++) {
+    radiobuttonq7[i].addEventListener("click", function () {
+        document.getElementById(q7).value = radiobuttonq7[i].value;
+    });
+}
+var radiobuttonq8 = document.getElementsByName("pregunta8Opciones");
+for (let i = 0; i < radiobuttonq8.length; i++) {
+    radiobuttonq8[i].addEventListener("click", function () {
+        document.getElementById(q8).value = radiobuttonq8[i].value;
+    });
+}
+var radiobuttonq9 = document.getElementsByName("pregunta9Opciones");
+for (let i = 0; i < radiobuttonq9.length; i++) {
+    radiobuttonq9[i].addEventListener("click", function () {
+        document.getElementById(q9).value = radiobuttonq9[i].value;
+    });
+}
+var radiobuttonq10 = document.getElementsByName("pregunta10Opciones");
+for (let i = 0; i < radiobuttonq10.length; i++) {
+    radiobuttonq10[i].addEventListener("click", function () {
+        document.getElementById(q10).value = radiobuttonq10[i].value;
+    });
+}
