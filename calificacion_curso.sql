@@ -47,14 +47,6 @@ CREATE TABLE `calificacion_curso` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `calificacion_curso`
---
-
-INSERT INTO `calificacion_curso` (`id`, `idcurso`, `idusuario`, `pregunta1`, `pregunta2`, `pregunta3`, `pregunta4`, `pregunta5`, `pregunta6`, `pregunta7`, `pregunta8`, `pregunta9`, `pregunta10`, `promedioCalificacion`, `created_at`, `updated_at`) VALUES
-(4, 22, 468, 2, 3, 4, 3, 5, 'introducción', 3, 5, 3, 4, 3.56, '2023-03-01 17:52:04', '2023-03-01 17:52:04'),
-(5, 18, 468, 4, 4, 4, 4, 4, 'introducción', 4, 4, 4, 4, 4.00, '2023-03-01 17:52:51', '2023-03-01 17:52:51');
-
---
 -- Índices para tablas volcadas
 --
 
