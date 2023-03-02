@@ -82,6 +82,8 @@ Route::post('persona/actualizarperfil', 'PersonaController@actualizarperfil')->n
 
 Route::get('miscursos/', 'CursoController@ListCursosComprados')->name('miscursos')->middleware('auth');
 Route::get('miaprendizaje/{id}/', 'CursoController@listMiAprendizaje')->name('miaprendizaje')->middleware('auth');
+Route::get('miaprendizaje/calificacion/{id}/', 'CursoController@calificacion_curso')->name('calificacion_curso')->middleware('auth');
+Route::post('store_calificacion_curso/', 'CursoController@store_calificacion_curso')->name('store_calificacion_curso')->middleware('auth');
 
 /* TAREAS DEL ESTUDIANTE, SUBIR TAREAS Y VER SUS NOTAS*/
 Route::get('mistareas/{idcurso}/{idseccion}', 'RevisarTareaController@misTareas')->name('misTareas')->middleware('auth');
@@ -334,4 +336,3 @@ Route::post('resolver/examen/guardar', 'ResolverExamenController@postGuardarExam
 Route::post('resolver/examen/terminar', 'ResolverExamenController@postTerminarExamen')->middleware('auth');
 
 Route::get('/admin/prueba/lista', 'ReportesController@getListarReportes')->middleware('auth');
-

@@ -131,7 +131,23 @@
 
                                 </div>
                                 @endforeach
-
+                                @if (Auth::user()->idrol == 2)
+                                    @if(empty($usuario_curso_calificado))
+                                    <div class="row mt-3 ml-5">
+                                        <a href="{{route('calificacion_curso',array($curso->idcurso))}}">
+                                            <button class="btn btn-success">
+                                                <p>Calificanos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="la la-star" style="color: yellow"></i></p>                              
+                                            </button>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="row mt-3 ml-5">
+                                        <button class="btn btn-success">
+                                            <p>Calificado&nbsp;&nbsp;&nbsp;&nbsp;{{$usuario_curso_calificado->promedioCalificacion}}&nbsp;<i class="la la-star" style="color: yellow"></i></p>                              
+                                        </button>
+                                    </div>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     </div>
