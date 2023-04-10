@@ -1,7 +1,7 @@
 @extends('layouts.app_web')
 @section('tituloPagina','Certificaciones')
 @section('styles')
-<!--<link rel="stylesheet" href="{{ asset('/recursos/web/css/plyr.css') }}">-->
+{{-- <!--<link rel="stylesheet" href="{{ asset('/recursos/web/css/plyr.css') }}">--> --}}
 @endsection
 @section('contenido')
 
@@ -55,7 +55,7 @@
                             </li>
                         </ul>
                         {{--<div class="sort-ordering">
-                            
+
                             <select class="sort-ordering-select" id="select-idcategoria" name="idcategoria">
                                 @php
                                     $idcategoria = old('idcategoria');
@@ -118,7 +118,7 @@
                                                     <p class="card__author">
                                                         <a href="javascript:"><i class="la la-laptop"></i> Modalidad {{ $curso->modalidad }}</a>
                                                     </p>
-                                                    
+
                                                     <div class="card-action">
                                                         <ul
                                                             class="card-duration d-flex justify-content-between align-items-center">
@@ -146,13 +146,13 @@
                                             </div><!-- end card-item -->
                                         </div><!-- end col-lg-6 -->
                                     @endforeach
-                                    
-                                            
+
+
                                 </div><!-- end course-block -->
                             </div><!-- end tab-pane -->
                             <div role="tabpanel" class="tab-pane fade" id="list-view" aria-labelledby="list-view-tab">
                                 <div class="row">
-                                    
+
                                     @foreach ($cursos as $curso)
                                         <div class="col-lg-12">
                                             <div class="card-item card-list-layout card-preview" data-tooltip-content="#tooltip_content_{{$curso->idcurso}}">
@@ -161,7 +161,7 @@
                                                 </div><!-- end card-image -->
                                                 <div class="card-content">
                                                     <p class="card__label">
-                                                        <span class="card__label-text">{{ $curso->categoria }}</span>                                                        
+                                                        <span class="card__label-text">{{ $curso->categoria }}</span>
                                                     </p>
                                                     <h3 class="card__title">
                                                         <a href="{{ route('cursoid', $curso->idcurso) }}">{{ $curso->titulo }}</a>
@@ -211,13 +211,13 @@
                                             </div><!-- end card-item -->
                                         </div><!-- end col-lg-12 -->
                                         @endforeach
-                                                                      
+
                                 </div><!-- end course-block -->
                             </div><!-- end tab-pane -->
                         </div><!-- end tab-content -->
-                    </div><!-- end col-lg-8 --> 
+                    </div><!-- end col-lg-8 -->
                 </div><!-- end row -->
-                
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="page-navigation-wrap text-center mt-5">
