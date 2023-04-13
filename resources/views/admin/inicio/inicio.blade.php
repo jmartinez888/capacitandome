@@ -1,8 +1,11 @@
 @extends('layouts.app_admin')
+
 @section('tituloPagina','Inicio')
+
 @section('styles')
-    {{--<link href="{{ asset('/recursos/admin/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />--}}
+    {{-- <link href="{{ asset('/recursos/admin/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
 @endsection
+
 @section('subheader')
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -19,13 +22,14 @@
     </div>
 </div>
 @endsection
+
 @section('contenido')
 <!--begin::Container-->
 <div class="container">
     <div class="row">
         <div class="col-lg-3">
             <div class="row">
-                <div class="col-xl-6 col-sm-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xl-12">
                     <!--begin::Tiles Widget 2-->
                     <div class="card card-custom bg-danger gutter-b" style="height: 130px;cursor: pointer;">
                         <!--begin::Body-->
@@ -35,7 +39,7 @@
                                 <div class="flex-grow-1 card-spacer-x pt-6">
                                         <div class="text-center text-inverse-danger font-weight-bold">CURSOS</div>
                                         <div class="text-center p-5">
-                                            <i class="fa fa-edit" style="font-size: 30px;color: white"></i>
+                                            <i class="fa fa-book" style="font-size: 30px;color: white"></i>
                                         </div>
                                 </div>
                             </div>
@@ -60,7 +64,7 @@
                     </div>
                     <!--end::Tiles Widget 3-->
                 </div>
-                <div class="col-xl-6 col-sm-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 col-xl-12">
                     <!--begin::Tiles Widget 4-->
                     <div class="card card-custom bg-warning gutter-b" style="height: 130px;cursor: pointer;">
                         <!--begin::Body-->

@@ -47,7 +47,9 @@ class CoursesController extends Controller {
 
     public function getListarCuorsesPaginate(Request $request)
     {
-        $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
+        // $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
+
+        $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
 
         return  view('admin.course.paginate_cursos',  ['cursos' => $cursos])->render();
     }
@@ -76,10 +78,10 @@ class CoursesController extends Controller {
 
 
 
-    /************************************************************ */
-    /************** SECCIONES SECCIONES SECCIONES *********************** */
-    /************************************************************ */
-    /************************************************************ */
+    /*************************************************************/
+    /************** SECCIONES SECCIONES SECCIONES ****************/
+    /*************************************************************/
+    /*************************************************************/
 
     public function getAgregarSecciones($idcurso = 1)
     {
@@ -491,8 +493,7 @@ class CoursesController extends Controller {
             return view('admin.course.recursos.docentes.crud', compact('curso','personas','docentes'));
         } else {
             return redirect('/admin/courses');
-        }
-        
+        }        
     }
 
     public function guardarEditarDocentes(DocentesRequest $request) {
@@ -531,14 +532,38 @@ class CoursesController extends Controller {
     /* FIN DOCENTES */
 
 
-    public function getDesactivarCurso($idcurso)
+    // public function getDesactivarCurso($idcurso)
+    // {
+    //     $curso = Curso::where('idcurso', $idcurso)->first();
+
+    //     $curso->estado = 0;
+    //     $curso->save();
+
+    //     return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+    // }
+
+    // Cambiar estados de los cursos
+    public function getCambiarEstadoCurso($idcurso)
     {
         $curso = Curso::where('idcurso', $idcurso)->first();
 
-        $curso->estado = 0;
+        // $curso->estado = 0;
+        // $curso->save();
+
+        // return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+
+        if ($curso->estado == 0) {
+            $curso->estado = 1;
+            //$curso->save();
+        } else {
+            $curso->estado = 0;
+            //$curso->save();
+        } 
+
         $curso->save();
 
-        return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+        return redirect('/admin/courses')->with('success','Curso eliminado satisfactoriamente');
+        //return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     }
 
     public function listarEstudiantes($idcurso)
@@ -549,9 +574,7 @@ class CoursesController extends Controller {
             return view('admin.course.estudiantes.lista_estudiantes', compact('curso'));
         } else {
             return redirect('/admin/courses');
-        }
-        
-        
+        }      
     }
 
     public function listarEstudiantesCurso(Request $request)
@@ -919,7 +942,6 @@ class CoursesController extends Controller {
             return redirect()->back()->with('success','Registro creado satisfactoriamente');
 
         }
-
     }
 
     public function mostrarPregunta($idPreg){
@@ -939,5 +961,4 @@ class CoursesController extends Controller {
         return json_encode(["status" => true, "message" => "Pregunta eliminada"]);
 
     }
-
 }

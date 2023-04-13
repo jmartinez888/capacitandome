@@ -1,35 +1,33 @@
 @extends('layouts.app_admin')
 
-
-
 @section('tituloPagina','Registrar curso')
 
 @section('styles')
 @endsection
 
 @section('subheader')
-<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-        <!--begin::Info-->
-        <div class="d-flex align-items-center flex-wrap mr-1">
-            <!--begin::Page Heading-->
-            <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <!--begin::Page Title-->
-                <h5 class="text-dark font-weight-bold my-1 mr-5"><i class="fa fa-edit"></i> REGISTRAR NUEVO CURSO</h5>
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5"><i class="fa fa-plus-circle mr-1"></i> REGISTRAR NUEVO CURSO</h5>
+                </div>
+                <!--end::Page Heading-->
             </div>
-            <!--end::Page Heading-->
-        </div>
-        <!--end::Info-->
+            <!--end::Info-->
 
-        <!--begin::Toolbar-->
-        <div class="d-flex align-items-center">
-            <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> Inicio</a>
-            <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm"><i class="la la-book"></i> Cursos</a>
-        </div>
-        <!--end::Toolbar-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> Inicio</a>
+                <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm"><i class="la la-book"></i> Cursos</a>
+            </div>
+            <!--end::Toolbar-->
 
+        </div>
     </div>
-</div>
 @endsection
 
 @section('contenido')
@@ -39,24 +37,21 @@
         <div class="card-header py-3">
             <div class="card-title">
                 <span class="card-icon">
-                    <i class="fa fa-edit text-primary"></i>
+                    <i class="fa fa-info-circle text-primary"></i>
                 </span>
                 <h3 class="card-label">Datos del curso <small>(Los campos notificados son requeridos)</small></h3>
             </div>
         </div>
-        <div class="card-body">
 
-            <style>
-                .error-select{border: 1px solid red !important;border-radius: .42rem !important;}
-            </style>
+        <div class="card-body">
+            {{-- <style>
+                .error-select{border: 1px solid rojo !important; border-radius: .42rem !important;}
+            </style> --}}
 
             <form name="form_curso" method="POST" action="{{ route('admin_course_nuevo_add') }}" autocomplete="off" enctype="multipart/form-data">
-                @csrf
-                        
-                            
+                @csrf                          
                                 
                 <div class="row">
-
                     <div class="col-md-12">
                         <div class="form-group mb-4">
                             <label>Titulo  <span class="text-danger">*</span></label>
@@ -64,8 +59,7 @@
                             
                             @if ($errors->first('titulo'))
                                 <span class="form-text text-danger">{{ $errors->first('titulo') }}</span>
-                            @endif
-                        
+                            @endif                        
                         </div>
                     </div>
 

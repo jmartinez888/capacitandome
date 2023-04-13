@@ -91,7 +91,6 @@ class CursoController extends Controller
     #------ CURSO DETALLE :
     public function showCursoDetalleId($id)
     {
-
         $cursoId     = $this->showCursoId($id);
         $cursoTema   = $this->listCursoTemas($id);
         $requisitos  = $this->listCursoRequitos($id);
