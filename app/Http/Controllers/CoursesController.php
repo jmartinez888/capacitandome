@@ -545,14 +545,9 @@ class CoursesController extends Controller {
     // }
 
     // Cambiar estados de los cursos
-    public function getDesactivarCurso($idcurso)
+    public function getCambiarEstadoCurso($idcurso)
     {
         $curso = Curso::where('idcurso', $idcurso)->first();
-
-        // $curso->estado = 0;
-        // $curso->save();
-
-        // return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
 
         if ($curso->estado == 0) {
             $curso->estado = 1;
@@ -565,6 +560,7 @@ class CoursesController extends Controller {
         return view('admin.course.list')->with('success','Se cambió el estado del curso');
     }
 
+    // Listar estudiantes
     public function listarEstudiantes($idcurso)
     {
         $curso = Curso::where('idcurso', $idcurso)->first();

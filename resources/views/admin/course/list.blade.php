@@ -5,11 +5,7 @@
 @section('styles')
     <style type="text/css">
         .fila-desactivada {
-            background-color: #FF4F4F;
-            color: #ffffff;
-        }
-
-        .fila-desactivada a{
+            background-color: #f64e60;
             color: #ffffff;
         }
     </style>
@@ -307,13 +303,13 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/course/eliminar/${idcurso}`, function () {
+                    $.get(`/admin/course/cambiarEstado/${idcurso}`, function () {
                         Swal.fire('Estado cambiado', 'La página se recargará', 'success');
                     });
 
                     setTimeout(function() {
                         location.reload();
-                    }, 2000); //Espera 2 segundos (2000 milisegundos) antes de recargar la página
+                    }, 1500); //Espera 1.5 segundos (1500 milisegundos) antes de recargar la página
                 }else{
                     
                 }
