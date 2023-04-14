@@ -78,10 +78,9 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group mb-4">
-                            {{-- <label>Buscar:</label> --}}
+                <div class="form-row d-flex align-items-center">
+                    <div class="col-md-9 col-xs-12">
+                        <div class="form-group mb-9">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -91,6 +90,15 @@
                                                                             
                         </div>
                     </div>
+
+                    <div class="col-md-3 col-xs-12">
+                        <div class="custom-control custom-switch mb-9 d-flex align-items-center">
+                            <div class="mx-auto">
+                                <input type="checkbox" class="custom-control-input" id="switch1">
+                                <label class="custom-control-label" for="switch1">Mostrar cursos deshabilitados</label>
+                            </div>
+                        </div> 
+                    </div>                     
                 </div>
 
                 {{-- Mensajes de éxito o error al crear, editar o eliminar un curso --}}
