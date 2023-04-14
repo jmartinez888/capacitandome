@@ -51,6 +51,15 @@ class CoursesController extends Controller {
     {
         // $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
 
+        $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
+
+        return  view('admin.course.paginate_cursos',  ['cursos' => $cursos])->render();
+    }
+
+    public function getListarCuorsesDesPaginate(Request $request)
+    {
+        // $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
+
         $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
 
         return  view('admin.course.paginate_cursos',  ['cursos' => $cursos])->render();

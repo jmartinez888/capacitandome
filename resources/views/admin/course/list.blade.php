@@ -285,7 +285,24 @@
             listar_courses();
 
             $("#buscar_curso").on('keyup', function () {
-                listar_courses();
+                let checked = document.getElementById('switch1');
+
+                if (checked.checked) {
+                    listar_coursesDes();
+                } else {               
+                    listar_courses();
+                }
+            });
+
+            // Mostrar u ocultar cursos deshabilitados
+            $("#switch1").on('change', function () {
+                let checked = document.getElementById('switch1');
+
+                if (checked.checked) {
+                    listar_coursesDes();
+                } else {               
+                    listar_courses();
+                }
             });
 
             $(document).on("click", '.paginate-go', function(e) {
@@ -294,8 +311,18 @@
             });
         }
 
+        // Listar solo los cursos habilitados
         function listar_courses(page = 1) {            
             $.get(`/admin/courses/listar?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
+                $("#table_courses").html(data);
+
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+        }
+
+        // Listar todos los cursos
+        function listar_coursesDes(page = 1) {            
+            $.get(`/admin/courses/listarDes?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
                 $("#table_courses").html(data);
 
                 $('[data-toggle="tooltip"]').tooltip()
@@ -317,7 +344,7 @@
 
                     setTimeout(function() {
                         location.reload();
-                    }, 1500); //Espera 1.5 segundos (1500 milisegundos) antes de recargar la página
+                    }, 1200); //Espera 1.2 segundos (1200 milisegundos) antes de recargar la página
                 }else{
                     
                 }

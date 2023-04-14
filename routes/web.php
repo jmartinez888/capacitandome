@@ -174,6 +174,8 @@ Route::get('ultimaClaseVista/{id?}', 'CursoController@ultimaClaseVista')->name('
 Route::get('admin/courses', 'CoursesController@getAdmin')->name('admin_course_list')->middleware('auth');
 Route::get('admin/courses/listar', 'CoursesController@getListarCuorsesPaginate')->middleware('auth');
 
+Route::get('admin/courses/listarDes', 'CoursesController@getListarCuorsesDesPaginate')->middleware('auth');
+
 Route::get('admin/course/nuevo', 'CoursesController@getNuevo')->name('admin_course_nuevo')->middleware('auth');
 Route::post('admin/course/nuevo/guardar', 'CoursesController@postGuardarCurso')->name('admin_course_nuevo_add')->middleware('auth');
 Route::get('admin/course/cambiarEstado/{id}', 'CoursesController@getCambiarEstadoCurso')->middleware('auth');
