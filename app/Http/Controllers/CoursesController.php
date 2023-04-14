@@ -37,6 +37,8 @@ use App\Http\Requests\TemasRequest;
 use App\Http\Requests\ComunidadRequest;
 use App\Http\Requests\DocentesRequest;
 
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class CoursesController extends Controller {
 
@@ -543,7 +545,7 @@ class CoursesController extends Controller {
     // }
 
     // Cambiar estados de los cursos
-    public function getCambiarEstadoCurso($idcurso)
+    public function getDesactivarCurso($idcurso)
     {
         $curso = Curso::where('idcurso', $idcurso)->first();
 
@@ -554,16 +556,13 @@ class CoursesController extends Controller {
 
         if ($curso->estado == 0) {
             $curso->estado = 1;
-            //$curso->save();
         } else {
             $curso->estado = 0;
-            //$curso->save();
         } 
 
         $curso->save();
 
-        return redirect('/admin/courses')->with('success','Curso eliminado satisfactoriamente');
-        //return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+        return view('admin.course.list')->with('success','Se cambió el estado del curso');
     }
 
     public function listarEstudiantes($idcurso)

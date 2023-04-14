@@ -3,6 +3,16 @@
 @section('tituloPagina','Lista de cursos')
 
 @section('styles')
+    <style type="text/css">
+        .fila-desactivada {
+            background-color: #FF4F4F;
+            color: #ffffff;
+        }
+
+        .fila-desactivada a{
+            color: #ffffff;
+        }
+    </style>
 @endsection
 
 @section('subheader')
@@ -288,7 +298,27 @@
             });
         }
 
-        
+        function desactivar(idcurso) {
+            Swal.fire({
+                title: '¿Seguro que quiere cambiar el estado de este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f64e60',
+                confirmButtonText: '¡Si, cambiar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get(`/admin/course/eliminar/${idcurso}`, function () {
+                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    });
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000); //Espera 2 segundos (2000 milisegundos) antes de recargar la página
+                }else{
+                    
+                }
+            });
+        }
 
         function mostrarModal(idcurso) {
             if (idcurso != "") {

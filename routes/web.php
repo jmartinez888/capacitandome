@@ -176,8 +176,7 @@ Route::get('admin/courses/listar', 'CoursesController@getListarCuorsesPaginate')
 
 Route::get('admin/course/nuevo', 'CoursesController@getNuevo')->name('admin_course_nuevo')->middleware('auth');
 Route::post('admin/course/nuevo/guardar', 'CoursesController@postGuardarCurso')->name('admin_course_nuevo_add')->middleware('auth');
-// Route::get('admin/course/eliminar/{id}', 'CoursesController@getDesactivarCurso')->middleware('auth');
-Route::get('admin/course/eliminar/{id}', 'CoursesController@getCambiarEstadoCurso')->middleware('auth');
+Route::get('admin/course/eliminar/{id}', 'CoursesController@getDesactivarCurso')->middleware('auth');
 
 
 Route::get('admin/course/secciones/{idcurso}', 'CoursesController@getAgregarSecciones')->middleware('auth');
@@ -189,8 +188,7 @@ Route::get('admin/course/nuevo', 'CoursesController@getNuevo')->name('admin_cour
 Route::get('admin/course/editar/{id}', 'CoursesController@getEditar')->middleware('auth');
 Route::post('admin/course/nuevo/guardar', 'CoursesController@postGuardarCurso')->name('admin_course_nuevo_add')->middleware('auth');
 Route::post('admin/course/nuevo/editar', 'CoursesController@postEditarCurso')->name('admin_course_nuevo_edit')->middleware('auth');
-// Route::get('admin/course/eliminar/{id}', 'CoursesController@getDesactivarCurso')->middleware('auth');
-Route::get('admin/course/eliminar/{id}', 'CoursesController@getCambiarEstadoCurso')->middleware('auth');
+Route::get('admin/course/eliminar/{id}', 'CoursesController@getDesactivarCurso')->middleware('auth');
 
 
 Route::get('admin/course/requisito/eliminar/{id}', 'CoursesController@getEliminarRequisito')->middleware('auth');
