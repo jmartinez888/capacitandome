@@ -14,5 +14,4 @@ class ComunidadEstudiante extends Model
     public function Curso(){
         return $this->belongsTo('App\Models\Curso', 'idclase', 'idclase');
     }
-
 }

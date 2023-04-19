@@ -180,7 +180,7 @@ Route::get('admin/course/cambiarEstado/{id}', 'CoursesController@getCambiarEstad
 
 //Route::get('admin/course/requisito/eliminar/{id}', 'CoursesController@getEliminarRequisito')->middleware('auth');
 Route::get('admin/course/tema/eliminar/{id}', 'CoursesController@getEliminarTema')->middleware('auth');
-Route::get('admin/course/comunidad/eliminar/{id}', 'CoursesController@getEliminarComunidad')->middleware('auth');
+//Route::get('admin/course/comunidad/eliminar/{id}', 'CoursesController@getEliminarComunidad')->middleware('auth');
 
 Route::get('admin/course/docentes/eliminar/{id}', 'CoursesController@getEliminarDocente')->middleware('auth');
 
@@ -244,7 +244,7 @@ Route::get('/admin/eliminartemas/{id}', 'CoursesController@eliminarTemas')->midd
 Route::get('/admin/comunidad/{id}', 'CoursesController@comunidadIndex')->name('comunidadCursoId')->middleware('auth');
 Route::post('/admin/comunidad', 'CoursesController@guardarEditarComunidad')->name('guardEditarComunidad')->middleware('auth');
 Route::get('/admin/mostrarcomunidad/{id}', 'CoursesController@mostrarComunidad')->middleware('auth');
-Route::get('/admin/eliminarcomunidad/{id}', 'CoursesController@eliminarComunidad')->middleware('auth');
+Route::get('/admin/cambiarEstadoComunidad/{id}/{estado}', 'CoursesController@cambiarEstadoComunidad')->middleware('auth');
 
 /*Docentes del CURSO */
 Route::get('/admin/docentes/{id}', 'CoursesController@docentesIndex')->name('docentesCursoId')->middleware('auth');

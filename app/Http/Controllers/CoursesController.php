@@ -381,14 +381,6 @@ class CoursesController extends Controller {
 
         $requisitos = Requisito::where('idrequisitos', $idrequisitos)->first();
 
-        // dd($requisitos);
-
-        // if ($requisitos->estado == 1) {
-        //     $requisitos->estado = 0;
-        // } else {
-        //     $requisitos->estado = 1;
-        // } 
-
         $requisitos->estado = $estado;
 
         $requisitos->save();
@@ -477,10 +469,18 @@ class CoursesController extends Controller {
         return \json_encode($comunidad);
     }
 
-    public function eliminarComunidad($idcomunidad_estudiantil) {
-        $comunidad = ComunidadEstudiante::find($idcomunidad_estudiantil);
-        $comunidad->delete();
-        return json_encode(["status" => true, "message" => "Comunidad eliminada"]);
+    public function cambiarEstadoComunidad($idcomunidad_estudiantil, $estado) {
+        // $comunidad = ComunidadEstudiante::find($idcomunidad_estudiantil);
+        // $comunidad->delete();
+        // return json_encode(["status" => true, "message" => "Comunidad eliminada"]);
+
+        $comunidad = ComunidadEstudiante::where('idcomunidad', $idcomunidad_estudiantil)->first();
+
+        $comunidad->estado = $estado;
+
+        $comunidad->save();
+
+        return redirect()->back();
     }
     /* FIN COMUNIDAD */
 

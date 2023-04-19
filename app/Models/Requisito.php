@@ -15,15 +15,15 @@ class Requisito extends Model
     }
 
     /** Estado del requisito **/
-    public function requisito_status(){
-        switch ($this->estado) {
-            case 0:
-                return 'Deshabilitado';
-            case 1:
-                return 'Habilitado';
-            default:
-                # code...
-                break;
-        }
-    }
+    // public function requisito_status(){
+    //     switch ($this->estado) {
+    //         case 0:
+    //             return 'Deshabilitado';
+    //         case 1:
+    //             return 'Habilitado';
+    //         default:
+    //             # code...
+    //             break;
+    //     }
+    // }
 }

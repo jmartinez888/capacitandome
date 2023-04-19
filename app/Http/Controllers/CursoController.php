@@ -142,7 +142,7 @@ class CursoController extends Controller
     #¿Para quien va dirigido este curso?
     public function listCursoComunidad($id)
     {
-        $estudiantes = DB::table('comunidad_estudiante')->where('idcurso', '=', $id)->get();
+        $estudiantes = DB::table('comunidad_estudiante')->where('idcurso', '=', $id)->where('estado','=',1)->get();
         return $estudiantes;
     }
 

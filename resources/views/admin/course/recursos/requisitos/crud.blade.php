@@ -73,8 +73,8 @@
                                         <thead style="">
                                             <tr>
                                                 <th style="width: 5%">N°</th>
-                                                <th style="width: 50%">TITULO</th>
-                                                <th style="width: 40%" class="text-center">Estado</th>
+                                                <th style="width: 60%">TITULO</th>
+                                                <th style="width: 30%" class="text-center">Estado</th>
                                                 <th style="width: 5%;" class="text-center"><i class="fa fa-cogs"></i></th>
                                             </tr>
                                         </thead>
@@ -88,7 +88,6 @@
                                                 <tr id="tr_{{ $item->idrequisitos }}">
                                                     <td style="vertical-align: middle;">{{ $autoi++ }}.</td>
                                                     <td style="vertical-align: middle;">{{ $item->requisitos }}</td>
-                                                    {{-- <td>{{ $item->requisito_status() }}</td> --}}
 
                                                     @if($item->estado == 1)
                                                         <td class="text-center" style="vertical-align: middle;">
@@ -136,18 +135,18 @@
                             <div class="col-md-12">
                                 <div class="card card-custom gutter-b">
                                     <div class="card-header">
-                                    <div class="card-title">
-                                    <h3 class="card-label">Ingrese requisito</h3>
+                                        <div class="card-title">
+                                            <h3 class="card-label">Ingrese requisito</h3>
+                                        </div>
                                     </div>
-                                    </div>
+
                                     <div class="card-body">
                                         <form action="{{ route('guardEditarRequisitos')}} " method="post">
                                             @csrf
                                             <input type="hidden" name="idrequisitos" id="idrequisitos" value="">
-                                            <input type="hidden" name="idcurso" id="idcurso" value="{{$curso->idcurso}}">
+                                            <input type="hidden" name="idcurso" id="idcurso" value="{{ $curso->idcurso }}">
                                             <div class="row">
-                                                <div class="col-md-12">                                               
-                                                                    
+                                                <div class="col-md-12">        
                                                     @if(Session::has('success'))                                                        
                                                         <div class="alert alert-custom alert-success fade show" role="alert">
                                                             <div class="alert-icon"><i class="la la-check"></i></div>
@@ -173,6 +172,7 @@
                                                     @endif
                                                 </div>
                                             </div>
+
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="form-group mb-4">
@@ -183,6 +183,7 @@
                                                         @endif
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-lg-12 text-center">
                                                     <button type="button" onclick="limpiar()" class="btn btn-secondary font-weight-bold mr-2"><i class="la la-close"></i> LIMPIAR</button>
                                                     <button type="submit" class="btn btn-primary font-weight-bold mr-2"><i class="la la-plus-circle"></i> GUARDAR</button>
