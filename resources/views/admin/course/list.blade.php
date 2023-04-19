@@ -282,15 +282,15 @@
 @section('script')
     <script>
         function index() {
-            listar_courses();
+            listar_courses(1);
 
             $("#buscar_curso").on('keyup', function () {
                 let checked = document.getElementById('switch1');
 
                 if (checked.checked) {
-                    listar_coursesDes();
-                } else {               
-                    listar_courses();
+                    listar_courses(0);
+                } else {              
+                    listar_courses(1);
                 }
             });
 
@@ -299,9 +299,9 @@
                 let checked = document.getElementById('switch1');
 
                 if (checked.checked) {
-                    listar_coursesDes();
-                } else {               
-                    listar_courses();
+                    listar_courses(0);
+                } else {             
+                    listar_courses(1);
                 }
             });
 
@@ -312,24 +312,15 @@
         }
 
         // Listar solo los cursos habilitados
-        function listar_courses(page = 1) {            
-            $.get(`/admin/courses/listar?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
+        function listar_courses(estado, page = 1) {            
+            $.get(`/admin/courses/listar/${estado}?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
                 $("#table_courses").html(data);
 
                 $('[data-toggle="tooltip"]').tooltip()
             });
         }
 
-        // Listar todos los cursos
-        function listar_coursesDes(page = 1) {            
-            $.get(`/admin/courses/listarDes?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
-                $("#table_courses").html(data);
-
-                $('[data-toggle="tooltip"]').tooltip()
-            });
-        }
-
-        function desactivar(idcurso) {
+        function desactivar(idcurso, estado) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
                 icon: 'warning',
@@ -338,13 +329,13 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/course/cambiarEstado/${idcurso}`, function () {
+                    $.get(`/admin/course/cambiarEstado/${idcurso}/${estado}`, function () {
                         Swal.fire('Estado cambiado', 'La página se recargará', 'success');
                     });
 
                     setTimeout(function() {
                         location.reload();
-                    }, 1200); //Espera 1.2 segundos (1200 milisegundos) antes de recargar la página
+                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
                     
                 }

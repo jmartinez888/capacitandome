@@ -32,7 +32,6 @@
 
 @section('contenido')
 <div class="container">
-
     <div class="card card-custom">
         <div class="card-header py-3">
             <div class="card-title">
@@ -54,7 +53,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group mb-4">
-                            <label>Titulo  <span class="text-danger">*</span></label>
+                            <label>Título  <span class="text-danger">*</span></label>
                             <input type="text" id="titulo" name="titulo" class="form-control {{ $errors->first('titulo') ? 'is-invalid' : '' }}" placeholder="Ingrese titulo del curso..." value="{{ old('titulo') }}">
                             
                             @if ($errors->first('titulo'))
@@ -114,6 +113,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group mb-4">
                             <label>Fecha de inicio <span class="text-danger">*</span></label>
@@ -124,6 +124,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group mb-4">
                             <label>Fecha finalización  <span class="text-danger">*</span></label>
@@ -134,6 +135,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group mb-4">
                             <label>Duración <span class="text-danger">*</span></label>
@@ -144,6 +146,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group mb-4">
                             <label>Total de clases <span class="text-danger">*</span></label>
@@ -191,6 +194,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-12">
                         <div class="form-group mb-4">
                             <label>Descripción larga  <span class="text-danger">*</span></label>
@@ -201,7 +205,6 @@
                             @endif
                         </div>
                     </div>
-
 
                     <div class="col-md-3">
                         <div class="form-group mb-4">
@@ -216,6 +219,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group mb-4">
                             <label>Modalidad  <span class="text-danger">*</span></label>
@@ -230,6 +234,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group mb-4">
                             <label>Plataforma  <span class="text-danger">*</span></label>
@@ -300,5 +305,40 @@
 @endsection
 
 @section('script')
-{{--<script src="{{ asset('/recursos/admin/assets/js/pages/crud/forms/widgets/select2.js') }}"></script>--}}
+    {{--<script src="{{ asset('/recursos/admin/assets/js/pages/crud/forms/widgets/select2.js') }}"></script>--}}
+    
+    {{-- <script>
+        $(document).ready(function() {
+            // Verificamos si hay un valor almacenado en el almacenamiento local
+            let storedPlan = localStorage.getItem('selectedPlan');
+            
+            if (storedPlan) {
+                // Establecemos el valor almacenado como el valor seleccionado
+                $('#plan').val(storedPlan);
+            }
+
+            // Ejecutamos la función de cambio de plan
+            $('#plan').change(function () {
+                let plan = $(this).val();
+
+                console.log(plan);
+
+                if (plan == "gratis") {
+                    $('#precio').prop('disabled', true);
+                    $('#precio').val(0);
+                } else {
+                    $('#precio').prop('disabled', false);
+                }
+
+                // Almacenamos el valor seleccionado en el almacenamiento local
+                localStorage.setItem('selectedPlan', plan);
+            });
+
+            // Verificamos el valor inicial del campo de selección al cargar la página
+            if ($('#plan').val() == "gratis") {
+                $('#precio').prop('disabled', true);
+                $('#precio').val(0);
+            }
+        });
+    </script> --}}
 @endsection

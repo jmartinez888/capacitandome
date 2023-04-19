@@ -36,17 +36,15 @@ Route::get('/main', function () {
 Route::get('/', 'CursoController@listInicio')->name('inicio');
 Route::get('buscarCurso/', 'CursoController@buscarCurso')->name('buscar_curso');
 Route::post('sendmensaje/', 'MensajesController@registrarMensaje')->name('sendmensaje');
+
 /*curso detalle*/
 Route::get('curso/{id}/', 'CursoController@showCursoDetalleId')->name('cursoid');
-
-
 
 /*Pagos Online*/
 Route::get('checkout/{id}/', 'PagarOnlineController@cursoPagarId')->name('checkout');
 Route::post('registrarcliente/', 'PagarOnlineController@registrarCliente')->name('registrarcliente');
 Route::post('validarCheckout/', 'PagarOnlineController@validarLoginCheckout')->name('validarLoginCheckout');
 Route::get('registrarme/{id}', 'PagarOnlineController@registrarmeCheckout')->name('registrarmeCheckout');
-
 
 Route::get('pasarelapago/', 'PagarOnlineController@pasarelaPagoRegistro')->name('pasarelapago');
 Route::post('registrarpreventa/', 'PagarOnlineController@registrarpreventa')->name('registrarpreventa');
@@ -64,10 +62,12 @@ Route::post('registrarCard', 'PagarOnlineController@registrarCard')->name('regis
 
 /*curso*/
 Route::get('cursos/{idcategoria?}/', 'CursoController@listCursoMain')->name('cursos');
+
 /*Nosotros*/
 Route::get('contactanos/', function () {
     return view('contactanos');
 });
+
 /* Certificados */
 //Route::get('certificados', 'CertificacionController@indexCertificadosWeb')->name('certificados');
 Route::get('certificados/', function () {
@@ -97,10 +97,6 @@ Route::post('proyectofinal', 'RevisarTareaController@registrarProyFinal')->name(
 Route::get('elimarProyFinal/{identregable}', 'RevisarTareaController@elimarTarea')->name('elimarProyFinal')->middleware('auth');
 /* fin tareas */
 
-
-
-
-
 /* REVISAR TAREAS PROFESOR */
 Route::get('revisartarea/{idcurso}/', 'RevisarTareaController@indexRevisarTarea')->name('revisarTarea')->middleware('auth');
 Route::get('estudiantes/{idcurso}/{idseccion}/{idusuario?}', 'RevisarTareaController@listaEstudiantes')->name('listaEstudiantes')->middleware('auth');
@@ -115,9 +111,6 @@ Route::post('revisarproyecto', 'RevisarTareaController@revisarProyCurso')->middl
 
 /* --- */
 
-
-
-
 /* DESCARGAR ARCHIVOS POR NOMBRE Y APELIDOS */
 Route::get('descargar/', 'RevisarTareaController@DescargarArchivo')->name('DescargarArchivo')->middleware('auth');
 /* */
@@ -129,11 +122,6 @@ Route::get('admin/tablaPagCertificados/', 'CertificacionController@tablaPagCerti
 
 Route::post('guardarcertificado', 'CertificacionController@agregarCertificado')->name('certificado_guardar')->middleware('auth');;
 /* FIN */
-
-
-
-
-
 
 
 /* INICIO MALLA CURRICULAR */
@@ -172,13 +160,11 @@ Route::get('ultimaClaseVista/{id?}', 'CursoController@ultimaClaseVista')->name('
 
 //->middleware('auth');
 Route::get('admin/courses', 'CoursesController@getAdmin')->name('admin_course_list')->middleware('auth');
-Route::get('admin/courses/listar', 'CoursesController@getListarCuorsesPaginate')->middleware('auth');
-
-Route::get('admin/courses/listarDes', 'CoursesController@getListarCuorsesDesPaginate')->middleware('auth');
+Route::get('admin/courses/listar/{estado}', 'CoursesController@getListarCuorsesPaginate')->middleware('auth');
 
 Route::get('admin/course/nuevo', 'CoursesController@getNuevo')->name('admin_course_nuevo')->middleware('auth');
 Route::post('admin/course/nuevo/guardar', 'CoursesController@postGuardarCurso')->name('admin_course_nuevo_add')->middleware('auth');
-Route::get('admin/course/cambiarEstado/{id}', 'CoursesController@getCambiarEstadoCurso')->middleware('auth');
+Route::get('admin/course/cambiarEstado/{id}/{estado}', 'CoursesController@getCambiarEstadoCurso')->middleware('auth');
 
 
 Route::get('admin/course/secciones/{idcurso}', 'CoursesController@getAgregarSecciones')->middleware('auth');
@@ -192,15 +178,11 @@ Route::post('admin/course/nuevo/guardar', 'CoursesController@postGuardarCurso')-
 Route::post('admin/course/nuevo/editar', 'CoursesController@postEditarCurso')->name('admin_course_nuevo_edit')->middleware('auth');
 Route::get('admin/course/cambiarEstado/{id}', 'CoursesController@getCambiarEstadoCurso')->middleware('auth');
 
-
 Route::get('admin/course/requisito/eliminar/{id}', 'CoursesController@getEliminarRequisito')->middleware('auth');
 Route::get('admin/course/tema/eliminar/{id}', 'CoursesController@getEliminarTema')->middleware('auth');
 Route::get('admin/course/comunidad/eliminar/{id}', 'CoursesController@getEliminarComunidad')->middleware('auth');
 
 Route::get('admin/course/docentes/eliminar/{id}', 'CoursesController@getEliminarDocente')->middleware('auth');
-
-
-
 
 Route::get('admin/course/secciones/{idcurso}', 'CoursesController@getAgregarSecciones')->middleware('auth');
 Route::post('admin/course/secciones/seccion/guardar', 'CoursesController@postGuardarSeccion')->name('seccion_guardar')->middleware('auth');
@@ -244,8 +226,6 @@ Route::get('admin/course/secciones/clases/{idseccion}', 'CoursesController@getAg
 Route::post('admin/course/secciones/clases/guardar', 'CoursesController@postGuardarClase')->name('clase_guardar')->middleware('auth');
 Route::get('admin/course/secciones/clases/mostrar/{idclase}', 'CoursesController@getMostrarClase')->middleware('auth');
 Route::get('admin/course/secciones/clases/eliminar/{idclase}', 'CoursesController@getEliminarClase')->middleware('auth');
-
-
 
 /*Requisitos del CURSO */
 Route::get('/admin/requisitos/{id}', 'CoursesController@requisitosIndex')->name('requisitosCursoId')->middleware('auth');;

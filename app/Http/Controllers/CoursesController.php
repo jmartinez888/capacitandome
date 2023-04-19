@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
-
 use App\Http\Controllers\Utiles\FilesController;
 use App\Http\Requests\CertificadoRequest;
 use App\Http\Requests\ClaseRequest;
@@ -37,30 +36,26 @@ use App\Http\Requests\TemasRequest;
 use App\Http\Requests\ComunidadRequest;
 use App\Http\Requests\DocentesRequest;
 
-use RealRashid\SweetAlert\Facades\Alert;
-
-
 class CoursesController extends Controller {
-
     public function getAdmin(Request $request)
     {
         return view('admin.course.list');
     }
 
-    public function getListarCuorsesPaginate(Request $request)
-    {
-        // $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
-
-        $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
-
-        return  view('admin.course.paginate_cursos',  ['cursos' => $cursos])->render();
-    }
-
-    public function getListarCuorsesDesPaginate(Request $request)
-    {
-        // $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['estado','=',1],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
-
-        $cursos = Curso::where([['titulo', 'like', "%{$request->filtro_search}%"],['tipo','=',1]])->orderBy('updated_at', 'desc')->paginate(10);
+    public function getListarCuorsesPaginate(Request $request, $estado)
+    {   
+        if ($estado == 0) {
+            $cursos = Curso::where([
+                ['titulo', 'like', "%{$request->filtro_search}%"],
+                ['tipo','=',1]
+            ])->orderBy('updated_at', 'desc')->paginate(10);
+        }
+        else {
+            $cursos = Curso::where([
+                ['titulo', 'like', "%{$request->filtro_search}%"],
+                ['tipo','=',1]
+            ])->whereIn('estado', [1, 2])->orderBy('updated_at', 'desc')->paginate(10);
+        }
 
         return  view('admin.course.paginate_cursos',  ['cursos' => $cursos])->render();
     }
@@ -86,9 +81,6 @@ class CoursesController extends Controller {
         
     }
 
-
-
-
     /*************************************************************/
     /************** SECCIONES SECCIONES SECCIONES ****************/
     /*************************************************************/
@@ -113,11 +105,9 @@ class CoursesController extends Controller {
 
     public function postGuardarSeccion(SeccionRequest $request)
     {
-
         $idseccion = $request->input('idseccion');
 
         if ($idseccion != null || $idseccion != '') {
-
             $seccion = Seccion::where('idseccion', $idseccion)->first();
 
             if ($seccion) {
@@ -131,9 +121,7 @@ class CoursesController extends Controller {
             }else{
                 return redirect()->back()->with('error','No existe esta seccion');
             }
-
         }else{
-
             $seccion = Seccion::firstOrCreate(
                 [
                     'idcurso' => $request->input('idcurso'),
@@ -149,7 +137,6 @@ class CoursesController extends Controller {
 
             return redirect()->back()->with('success','Registro creado satisfactoriamente');
         }
-
     }
 
     public function getMostrarSeccion($idseccion)
@@ -157,7 +144,6 @@ class CoursesController extends Controller {
         $seccion = Seccion::where('idseccion', $idseccion)->first();
 
         return json_encode($seccion);
-
     }
 
     public function getEliminarSeccion($idseccion)
@@ -169,8 +155,6 @@ class CoursesController extends Controller {
         return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     }
 
-
-
     /************************************************************ */
     /************** CLASE CLASE CLASE *********************** */
     /************************************************************ */
@@ -178,7 +162,6 @@ class CoursesController extends Controller {
 
     public function getAgregarClases($idseccion = 1)
     {
-
         $seccion = Seccion::with(['Clases' => function($query) {
            return $query->where('estado', 1);
         }])->activos()->where('idseccion', $idseccion)->first();
@@ -247,7 +230,6 @@ class CoursesController extends Controller {
 
         return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     }
-
 
     /************************************************************ */
     /************** CURSO CURSO CURSO CURSO *********************** */
@@ -357,21 +339,20 @@ class CoursesController extends Controller {
             return $nuevo_nombre;
     }
 
-
     /* REQUISITOS DEL CURSO */
     public function requisitosIndex($id) {
-        $curso = Curso::where('idcurso',$id)->first();
+        $curso = Curso::where('idcurso', $id)->first();
+
         if ($curso) {
-            $requisitos = Requisito::where([['idcurso',$id],['estado','1']])->distinct()->get();
+            $requisitos = Requisito::where([['idcurso', $id],['estado','1']])->distinct()->get();
+
             return view('admin.course.recursos.requisitos.crud', compact('curso','requisitos'));
         } else {
             return redirect('/admin/courses');
-        }
-        
+        }        
     }
 
-    public function guardarEditarRequisitos(RequisitosRequest $request) {
-        
+    public function guardarEditarRequisitos(RequisitosRequest $request) {        
         $idrequisitos = $request->input('idrequisitos');
 
         if ($idrequisitos == NULL || $idrequisitos == "") { 
@@ -457,8 +438,7 @@ class CoursesController extends Controller {
         
     }
 
-    public function guardarEditarComunidad(ComunidadRequest $request) {
-        
+    public function guardarEditarComunidad(ComunidadRequest $request) {        
         $idcomunidad_estudiantil = $request->input('idcomunidad_estudiantil');
 
         if ($idcomunidad_estudiantil == NULL || $idcomunidad_estudiantil == "") { 
@@ -507,8 +487,7 @@ class CoursesController extends Controller {
         }        
     }
 
-    public function guardarEditarDocentes(DocentesRequest $request) {
-        
+    public function guardarEditarDocentes(DocentesRequest $request) {        
         $iddocentes = $request->input('iddocentes');
 
         if ($iddocentes == NULL || $iddocentes == "") { 
@@ -542,7 +521,6 @@ class CoursesController extends Controller {
     }
     /* FIN DOCENTES */
 
-
     // public function getDesactivarCurso($idcurso)
     // {
     //     $curso = Curso::where('idcurso', $idcurso)->first();
@@ -553,20 +531,16 @@ class CoursesController extends Controller {
     //     return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     // }
 
-    // Cambiar estados de los cursos
-    public function getCambiarEstadoCurso($idcurso)
+    /** Cambiar estados de los cursos **/
+    public function getCambiarEstadoCurso($idcurso, $estado)
     {
-        $curso = Curso::where('idcurso', $idcurso)->first();
+        $curso = Curso::where('idcurso', $idcurso)->first(); 
 
-        if ($curso->estado == 0) {
-            $curso->estado = 1;
-        } else {
-            $curso->estado = 0;
-        } 
+        $curso->estado = $estado;
 
         $curso->save();
 
-        return view('admin.course.list')->with('success','Se cambió el estado del curso');
+        return redirect()->back();
     }
 
     // Listar estudiantes
@@ -608,23 +582,18 @@ class CoursesController extends Controller {
 
     }
 
-
-
     /************************************************************ */
     /************** EXAMENES DEL CURSO *********************** */
     /************************************************************ */
     /************************************************************ */
 
     public function listarEstudianteResoluciones($idCurso, $idUser){
-
         $estudiante = User::with('Persona')->where('idusuario', $idUser)->first();
 
         $examenes = Examen::with('Seccion')->where('idcurso', $idCurso)->where('estado', '1')->get();
 
-
         return view('admin.course.estudiantes.estudiante_examen', compact('estudiante', 'examenes', 'idCurso'));
         // return json_encode($examenes);
-
     }
 
     public function getVerExamenResuelto($idusuario, $idexamen)
@@ -636,7 +605,6 @@ class CoursesController extends Controller {
         // return json_encode($examen);
 
         if ($examen) {
-
             $resolver_examen = ResolverExamen::with('DetalleResolverExamen')->where('idusuario', $idusuario)->where('idexamen', $idexamen)->first();
 
             if ($resolver_examen) {
@@ -650,11 +618,7 @@ class CoursesController extends Controller {
         }
     }
 
-
-
-
     public function listarNotasUsuario($idUser, $idCurso){
-
         // $notas = User::with('Persona', 'ResolverExamenes', 'ResolverExamenes.Examen', 'ResolverExamenes.Examen.Seccion', 'ResolverExamenes.Examen.Curso')->where('idusuario', $idUser)->first();
 
         $user = User::with('Persona')->where('idusuario', $idUser)->first();
@@ -670,7 +634,6 @@ class CoursesController extends Controller {
     }
 
     public function verFormExamen($idCurso){
-
         $exam = [];
 
         $curso = Curso::where('idcurso', $idCurso)->first();
@@ -678,7 +641,6 @@ class CoursesController extends Controller {
         $secciones = Seccion::where('idcurso', $idCurso)->where('estado', '1')->get();
 
         return view('admin.course.examen.agregar_modificar_examen', compact('exam', 'curso', 'secciones'));
-
     }
 
     // public function listarExamenUsuario($idExam, $idUser = null){
@@ -830,8 +792,6 @@ class CoursesController extends Controller {
         return json_encode(['status' => true, 'message' => 'Exámen eliminado']);
 
     }
-
-
 
     public function preguntasExamen($idExam){
 

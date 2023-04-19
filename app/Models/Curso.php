@@ -81,4 +81,19 @@ class Curso extends Model
     {
         return $query->where('estado', 0);
     }
+
+    /** Estado del curso **/
+    public function course_status(){
+        switch ($this->estado) {
+            case 0:
+                return 'Deshabilitado';
+            case 1:
+                return 'Habilitado';
+            case 2:
+                return 'Publicado';
+            default:
+                # code...
+                break;
+        }
+    }
 }

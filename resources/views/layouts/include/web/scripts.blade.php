@@ -8,10 +8,10 @@
 <script src="{{ asset('/recursos/web/js/isotope.js') }}"></script>
 <script src="{{ asset('/recursos/web/js/waypoint.min.js') }}"></script>
 <script src="{{ asset('/recursos/web/js/jquery.counterup.min.js') }}"></script>
-{{--
-<script src="{{ asset('/recursos/web/js/particles.min.js') }}"></script>
-<script src="{{ asset('/recursos/web/js/particlesRun.js') }}"></script>
---}}
+
+{{-- <script src="{{ asset('/recursos/web/js/particles.min.js') }}"></script>
+<script src="{{ asset('/recursos/web/js/particlesRun.js') }}"></script> --}}
+
 <script src="{{ asset('/recursos/web/js/fancybox.js') }}"></script>
 <script src="{{ asset('/recursos/web/js/wow.js') }}"></script>
 <script src="{{ asset('/recursos/web/js/gmap-script.js') }}"></script>

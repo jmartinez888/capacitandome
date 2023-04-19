@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     @section('head')
-    @include('layouts.include.web.head')
-    {{-- Estilos extras de la página --}}
-    @yield('styles')
+        @include('layouts.include.web.head')
+
+        {{-- Estilos extras de la página --}}
+        @yield('styles')
     @show
 </head>
-
 <body>
     <!-- start cssload-loader -->
     <div class="preloader">
@@ -18,21 +17,27 @@
             </svg>
         </div>
     </div>
+    <!-- end cssload-loader -->
+
     <!-- Facebook -->
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v8.0" nonce="K7AUSHO5"></script>
-    
+    <div id="fb-root"></div>
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v8.0" nonce="K7AUSHO5"></script>
+    <!-- end Facebook -->
+
     @include('layouts.include.web.header')
 
     @yield('contenido')
+
     @include('layouts.include.web.footer')
+
     <!-- start scroll top -->
     <div id="scroll-top">
         <i class="fa fa-angle-up" title="Go top"></i>
     </div>
     <!-- end scroll top -->
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="mt-4 modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -42,11 +47,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                
                 <div class="modal-body">
-
                     <div class="contact-form-action">
                         <form method="post" autocomplete="off" id="frm-login">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="input-box">
@@ -59,6 +65,7 @@
                                         </div>
                                     </div>
                                 </div><!-- end col-md-12 -->
+
                                 <div class="col-lg-12">
                                     <div class="input-box">
                                         <label class="label-text">Contraseña<span
@@ -70,9 +77,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12" id="error-frm-login">
 
-                                </div>
+                                <div class="col-lg-12" id="error-frm-login"></div>
+                                
                                 <div class="col-lg-12 ">
                                     <div class="btn-box">
                                         <button class="theme-btn btn-block" id="btn-login" type="submit">ACCEDER A MI
@@ -82,24 +89,31 @@
                             </div><!-- end row -->
                         </form>
                     </div><!-- end contact-form -->
-
                 </div>
             </div>
         </div>
     </div>
 
     @yield('modal')
+
     @section('scripts')
-    @include('layouts.include.web.scripts')
+        @include('layouts.include.web.scripts')
     @show
+
     @yield('script')
     <script>
         $("#frm-login").keypress(function(e) {
             if (e.which == 13) {
-                return false;
+                // return false;
+
+                e.preventDefault();
+
+                // Verificar si los campos son válidos
+                if ($("#frm-login")[0].checkValidity()) {
+                    $("#frm-login").submit(); // Enviar el formulario
+                }
             }
         });
     </script>
 </body>
-
 </html>

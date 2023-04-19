@@ -25,7 +25,7 @@ class CursoController extends Controller
 
     #
     #
-    #--------------------------------------------------METODOS Y MODELOS PARA LA WEB----------------------------------------------
+    #-----------------¿METODOS Y MODELOS PARA LA WEB----------------------
     #
     #
     #
@@ -37,7 +37,7 @@ class CursoController extends Controller
         $total_alumnos = DB::table('persona')->where('tipo_persona', '=', 'estudiante')->distinct()->count();
         $total_docente = DB::table('persona')->where('tipo_persona', '=', 'Docente')->distinct()->count();
         $docentes = DB::table('persona')->where('tipo_persona', '=', 'Docente')->get();
-        $total_cursos  = DB::table('curso')->where('estado', '=', '1')->distinct()->count();
+        $total_cursos  = DB::table('curso')->where('estado', '=', '2')->distinct()->count();
         $cursos        = $this->listCursosWeb();
         $categorias    = $this->listCategoriasWeb();
 
@@ -56,7 +56,7 @@ class CursoController extends Controller
         $cursos = DB::table('curso')
             ->join('categoria as c', 'c.idcategoria', '=', 'curso.idcategoria')
             ->select('curso.idcurso', 'curso.titulo', 'curso.portada', 'curso.plan', 'curso.descripcion', 'curso.hora_duracion', 'curso.total_clases', 'curso.precio', 'c.categoria', 'curso.fecha_inicio', 'curso.fecha_final', 'curso.modalidad', 'curso.plataforma')
-            ->where('curso.estado', '=', 1)
+            ->where('curso.estado', '=', 2)
             ->where('curso.tipo', '=', 1)
             ->orderBy('idcurso', 'desc')
             ->limit(6)
@@ -85,8 +85,6 @@ class CursoController extends Controller
         }
         return \json_encode($data);
     }
-
-
 
     #------ CURSO DETALLE :
     public function showCursoDetalleId($id)
@@ -123,8 +121,10 @@ class CursoController extends Controller
             ->select('curso.idcurso', 'curso.titulo', 'curso.portada', 'curso.url_portada_det', 'curso.plan', 'curso.descripcion', 'curso.descripcion_larga', 'curso.hora_duracion', 'curso.total_clases', 'curso.precio', 'c.categoria', 'curso.fecha_inicio', 'curso.fecha_final', 'curso.modalidad', 'curso.plataforma', 'curso.brochure', 'curso.url_video_intro')
             ->where('curso.idcurso', '=', $id)
             ->first();
+
         return $cursoId;
     }
+
     #¿Qué aprenderás?
     public function listCursoTemas($id)
     {
@@ -150,10 +150,13 @@ class CursoController extends Controller
     public function listSeccionClases($id)
     {
         $secciones = DB::table('seccion')->where('idcurso', '=', $id)->get();
+        
         $data = array();
+
         foreach ($secciones as $seccion) {
             $clases = DB::table('clase')->where('idseccion', '=', $seccion->idseccion)
                 ->where('estado', '=', 1)->get();
+
             $data[] = array(
                 "idseccion" => $seccion->idseccion,
                 "titulo"    => $seccion->titulo,
@@ -161,6 +164,7 @@ class CursoController extends Controller
                 "clases"    => $clases,
             );
         }
+
         return ($data);
     }
 
@@ -176,7 +180,6 @@ class CursoController extends Controller
             ->get();
         return $docentes;
     }
-
 
     public function listPreciosWeb()
     {
@@ -204,10 +207,6 @@ class CursoController extends Controller
         ]);
     }
 
-
-
-
-
     #------ CURSO - WEB -------#
     public function listCursoMain($idcategoria = '')
     {
@@ -225,19 +224,16 @@ class CursoController extends Controller
         $cursos = DB::table('curso')
             ->join('categoria as c', 'c.idcategoria', '=', 'curso.idcategoria')
             ->select('curso.idcurso', 'curso.titulo', 'curso.portada', 'curso.plan', 'curso.descripcion', 'curso.hora_duracion', 'curso.total_clases', 'curso.precio', 'c.categoria', 'curso.fecha_inicio', 'curso.fecha_final', 'curso.modalidad', 'curso.plataforma')
-            ->where('curso.estado', '=', 1)
+            ->where('curso.estado', '=', 2)
             ->where('curso.tipo', '=', 1)
             ->orderBy('idcurso', 'desc')
             ->paginate(6);
         return $cursos;
     }
-
-
-
-
+    
     #
     #
-    #-------------------------------------------------- METODOS Y FUNCIONES PARA LA WEB ESTUDIANTE - LUEGUEADO ----------------------------------------------
+    #-------------- METODOS Y FUNCIONES PARA LA WEB ESTUDIANTE - LOGUEADO -------------------------
     #
     #
     #
