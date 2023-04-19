@@ -238,7 +238,7 @@ Route::get('/admin/cambiarEstadoRequisitos/{id}/{estado}', 'CoursesController@ca
 Route::get('/admin/temas/{id}', 'CoursesController@temasIndex')->name('temasCursoId')->middleware('auth');
 Route::post('/admin/temas', 'CoursesController@guardarEditarTemas')->name('guardEditarTemas')->middleware('auth');
 Route::get('/admin/mostrartemas/{id}', 'CoursesController@mostrarTemas')->middleware('auth');
-Route::get('/admin/eliminartemas/{id}', 'CoursesController@eliminarTemas')->middleware('auth');
+Route::get('/admin/cambiarEstadoTemas/{id}/{estado}', 'CoursesController@cambiarEstadoTemas')->middleware('auth');
 
 /*Comunidad del CURSO */
 Route::get('/admin/comunidad/{id}', 'CoursesController@comunidadIndex')->name('comunidadCursoId')->middleware('auth');

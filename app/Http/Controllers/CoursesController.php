@@ -395,7 +395,8 @@ class CoursesController extends Controller {
     public function temasIndex($id) {
         $curso = Curso::where('idcurso',$id)->first();
         if ($curso) {
-            $temas = CursoTema::where([['idcurso',$id],['estado','1']])->distinct()->get();
+            $temas = CursoTema::where([['idcurso',$id]])->distinct()->get();
+            
             return view('admin.course.recursos.temas.crud', compact('curso','temas'));
         } else {
             return redirect('/admin/courses');
@@ -427,10 +428,18 @@ class CoursesController extends Controller {
         return \json_encode($temas);
     }
 
-    public function eliminarTemas($idtemas) {
-        $temas = CursoTema::find($idtemas);
-        $temas->delete();
-        return json_encode(["status" => true, "message" => "Requisito eliminado."]);
+    public function cambiarEstadoTemas($idtemas, $estado) {
+        // $temas = CursoTema::find($idtemas);
+        // $temas->delete();
+        // return json_encode(["status" => true, "message" => "Requisito eliminado."]);
+
+        $tema = CursoTema::where('idcurso_tema', $idtemas)->first();
+
+        $tema->estado = $estado;
+
+        $tema->save();
+
+        return redirect()->back();
     }
     /* FIN TEMAS */
     

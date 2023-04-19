@@ -102,7 +102,7 @@
                                                     <tr>
                                                         <th style="width: 5%">N°</th>
                                                         <th style="width: 60%">COMUNIDAD</th>
-                                                        <th style="width: 30%">ESTADO</th>
+                                                        <th class="text-center" style="width: 30%">ESTADO</th>
                                                         <th style="width: 5%" class="text-center"><i class="fa fa-cogs"></i></th>
                                                     </tr>
                                                 </thead>
@@ -114,8 +114,8 @@
                                                 <tbody>
                                                     @foreach ($comunidad as $item)
                                                         <tr id="tr_{{ $item->idcomunidad }}">
-                                                            <td>{{ $autoi++ }}.</td>
-                                                            <td>{{ $item->comunidad }}</td>
+                                                            <td style="vertical-align: middle;">{{ $autoi++ }}.</td>
+                                                            <td style="vertical-align: middle;">{{ $item->comunidad }}</td>
 
                                                             @if($item->estado == 1)
                                                                 <td class="text-center" style="vertical-align: middle;">
@@ -135,7 +135,7 @@
                                                                 </td>
                                                             @endif
 
-                                                            <td class="text-center">
+                                                            <td class="text-center" style="vertical-align: middle;">
                                                                 <a href="javascript:" onclick="mostrarComunidad({{ $item->idcomunidad }})" 
                                                                     class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" 
                                                                     data-placement="top" data-original-title="Editar curso"><i class="fas fa-edit p-0"></i>

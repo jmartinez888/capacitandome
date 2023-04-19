@@ -128,7 +128,7 @@ class CursoController extends Controller
     #¿Qué aprenderás?
     public function listCursoTemas($id)
     {
-        $cursoTema = DB::table('curso_temas')->where('idcurso', '=', $id)->get();
+        $cursoTema = DB::table('curso_temas')->where('idcurso', '=', $id)->where('estado', '=', 1)->get();
         return $cursoTema;
     }
 

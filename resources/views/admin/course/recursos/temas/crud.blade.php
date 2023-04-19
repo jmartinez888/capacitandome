@@ -61,31 +61,53 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="tablaTemas">
+                                <table class="table table-bordered table-head-custom" id="tablaTemas">
                                     <thead style="">
                                         <tr>
                                             <th style="width: 5%">N°</th>
-                                            <th style="width: 80%">TITULO</th>
+                                            <th style="width: 60%">TITULO</th>
+                                            <th style="width: 30%" class="text-center">ESTADO</th>
                                             <th style="width: 15%" class="text-center"><i class="fa fa-cogs"></i></th>
                                         </tr>
                                     </thead>
+
                                     @php
                                         $autoi = 1;
                                     @endphp
+                                    
                                     <tbody>
                                         @foreach ($temas as $item)
                                             <tr id="tr_{{ $item->idcurso_tema }}">
-                                                <td>{{ $autoi++ }}.</td>
-                                                <td>{{ $item->temas }}</td>
-                                                <td class="text-center">
+                                                <td style="vertical-align: middle;">{{ $autoi++ }}.</td>
+                                                <td style="vertical-align: middle;">{{ $item->temas }}</td>
+                                                
+                                                @if($item->estado == 1)
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <a href="javascript:void(0)" onclick="cambiarEstadoTemas({{$item->idcurso_tema}}, 0)" 
+                                                            class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
+                                                            data-placement="top" title="" data-original-title="Deshabilitar">
+                                                            Habilitado <i class="fas fa-check ml-1"></i>
+                                                        </a>
+                                                    </td>
+                                                @else
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <a href="javascript:void(0)" onclick="cambiarEstadoTemas({{$item->idcurso_tema}}, 1)" 
+                                                            class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
+                                                            data-placement="top" title="" data-original-title="Habilitar">
+                                                            Deshabilitado <i class="fas fa-times ml-1"></i>
+                                                        </a>
+                                                    </td>
+                                                @endif
+
+                                                <td class="text-center" style="vertical-align: middle;">
                                                     <a href="javascript:" onclick="mostrarTemas({{ $item->idcurso_tema }})" 
                                                         class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" 
                                                         data-placement="top" data-original-title="Editar curso"><i class="fas fa-edit p-0"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)" onclick="eliminartemas({{$item->idcurso_tema}})" 
+                                                    {{-- <a href="javascript:void(0)" onclick="eliminartemas({{$item->idcurso_tema}})" 
                                                         class="btn btn-light-danger font-weight-bold btn-sm" data-toggle="tooltip" 
                                                         data-placement="top" title="" data-original-title="Eliminar curso"><i class="fas fa-trash p-0"></i>
-                                                    </a>
+                                                    </a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -98,6 +120,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-4">
                     <div class="row">
                         <div class="col-md-12">
@@ -173,55 +196,76 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('/recursos/admin/assets/js/pages/features/miscellaneous/toastr.js') }}"></script>
+    <script src="{{ asset('/recursos/admin/assets/js/pages/features/miscellaneous/toastr.js') }}"></script>
 
-<script>
-    function mostrarTemas(idtemas) {
-    $.get("/admin/mostrartemas/"+idtemas, function name(respuesta) {
-        respuesta = JSON.parse(respuesta);
-        $("#idaprenderas").val(respuesta.idcurso_tema);
-        $('#titulo').val(respuesta.temas);
-    })
-}
+    <script>
+        function mostrarTemas(idtemas) {
+            $.get("/admin/mostrartemas/"+idtemas, function name(respuesta) {
+                respuesta = JSON.parse(respuesta);
+                $("#idaprenderas").val(respuesta.idcurso_tema);
+                $('#titulo').val(respuesta.temas);
+            })
+        }
 
-function limpiar() {
-    $("#idaprenderas").val('');
-    $('#titulo').val('');
-    $("#titulo").removeClass('is-invalid');
-    $("#errorTitulo").html('');
-    toastr.info('Formulario reseteado.')
-}
+        function limpiar() {
+            $("#idaprenderas").val('');
+            $('#titulo').val('');
+            $("#titulo").removeClass('is-invalid');
+            $("#errorTitulo").html('');
+            toastr.info('Formulario reseteado.')
+        }
 
-function eliminartemas(idtemas) {
-    Swal.fire({
-        title: '¿Seguro que quiere eliminar este registro?',
-        text: "No se podra recuperar",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#f64e60',
-        // cancelButtonColor: '#f64e60',
-        confirmButtonText: 'Si, eliminar!'
-    }).then((result) => {
-        if (result.isConfirmed) {
+        // function eliminartemas(idtemas) {
+        //     Swal.fire({
+        //         title: '¿Seguro que quiere eliminar este registro?',
+        //         text: "No se podra recuperar",
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#f64e60',
+        //         // cancelButtonColor: '#f64e60',
+        //         confirmButtonText: 'Si, eliminar!'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
 
-            $.get(`/admin/eliminartemas/${idtemas}`, function (data, status) {
-                data = JSON.parse(data);
-                if (data.status == true) {
-                    Swal.fire('Eliminado', '', 'success');
-                    $(`#tr_${idtemas}`).remove();
-                    var rowCount = $('#tablaTemas tr').length;
-                    if (rowCount <= 1) {
-                        $('#tablaTemas').append('<tr><td class="text-center" colspan="5">Aún no hay certificaciones registradas...</td></tr>');
-                    }
+        //             $.get(`/admin/eliminartemas/${idtemas}`, function (data, status) {
+        //                 data = JSON.parse(data);
+        //                 if (data.status == true) {
+        //                     Swal.fire('Eliminado', '', 'success');
+        //                     $(`#tr_${idtemas}`).remove();
+        //                     var rowCount = $('#tablaTemas tr').length;
+        //                     if (rowCount <= 1) {
+        //                         $('#tablaTemas').append('<tr><td class="text-center" colspan="5">Aún no hay certificaciones registradas...</td></tr>');
+        //                     }
+        //                 }else{
+        //                     alert('Ocurrio un error, se refescara la página');
+        //                     location.reload();
+        //                 }
+        //             });
+
+        //         }
+        //     });
+        // }
+
+        function cambiarEstadoTemas(idcurso_tema, estado) {
+            Swal.fire({
+                title: '¿Seguro que quiere cambiar el estado de este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f64e60',
+                confirmButtonText: '¡Si, cambiar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get(`/admin/cambiarEstadoTemas/${idcurso_tema}/${estado}`, function () {
+                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    });
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
-                    alert('Ocurrio un error, se refescara la página');
-                    location.reload();
+                    
                 }
             });
-
         }
-    });
-}
-</script>
-
+    </script>
 @endsection

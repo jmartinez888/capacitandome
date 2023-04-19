@@ -59,7 +59,7 @@
 
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <div class="card card-custom gutter-b">
                             <div class="card-header">
                                 <div class="card-title">
@@ -73,8 +73,8 @@
                                         <thead style="">
                                             <tr>
                                                 <th style="width: 5%">N°</th>
-                                                <th style="width: 60%">TITULO</th>
-                                                <th style="width: 30%" class="text-center">Estado</th>
+                                                <th style="width: 50%">TITULO</th>
+                                                <th style="width: 40%" class="text-center">Estado</th>
                                                 <th style="width: 5%;" class="text-center"><i class="fa fa-cogs"></i></th>
                                             </tr>
                                         </thead>
@@ -130,7 +130,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-custom gutter-b">
@@ -183,7 +183,7 @@
                                                         @endif
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-lg-12 text-center">
                                                     <button type="button" onclick="limpiar()" class="btn btn-secondary font-weight-bold mr-2"><i class="la la-close"></i> LIMPIAR</button>
                                                     <button type="submit" class="btn btn-primary font-weight-bold mr-2"><i class="la la-plus-circle"></i> GUARDAR</button>
