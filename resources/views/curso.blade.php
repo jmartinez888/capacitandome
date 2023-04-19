@@ -1,7 +1,7 @@
 @extends('layouts.app_web')
 @section('tituloPagina','Certificaciones')
 @section('styles')
-{{-- <!--<link rel="stylesheet" href="{{ asset('/recursos/web/css/plyr.css') }}">--> --}}
+{{-- <!--<link rel="stylesheet" href="{{ asset('/recursos/web/css/plyr.css') }}">-->
 @endsection
 @section('contenido')
 

@@ -58,12 +58,13 @@
          },
          "font-family": "Poppins"
      }; 
-    </script> 
-     <script src = "{{ asset('/recursos/admin/assets/plugins/global/plugins.bundle.js') }}"></script> 
-     <script src = "{{ asset('/recursos/admin/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script> 
-     <script src = "{{ asset('/recursos/admin/assets/js/scripts.bundle.js') }}"></script> 
-     <!--<script src = "{{ asset('/recursos/admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"> </script>-->
-     <!--<script src = "//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM"> </script> -->
-     <!--<script src = "{{ asset('/recursos/admin/assets/plugins/custom/gmaps/gmaps.js')}}"> </script> -->
-     <script src = "{{ asset('/recursos/admin/assets/js/pages/widgets.js') }}"> </script>
-     <!--<script src = "{{ asset('/recursos/admin/assets/js/pages/custom/education/student/profile.js') }}"> </script>-->
+</script>
+
+<script src = "{{ asset('/recursos/admin/assets/plugins/global/plugins.bundle.js') }}"></script> 
+<script src = "{{ asset('/recursos/admin/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script> 
+<script src = "{{ asset('/recursos/admin/assets/js/scripts.bundle.js') }}"></script> 
+{{-- <script src = "{{ asset('/recursos/admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"> </script> --}}
+<!--<script src = "//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM"> </script> -->
+{{-- <script src = "{{ asset('/recursos/admin/assets/plugins/custom/gmaps/gmaps.js')}}"> </script> --}}
+<script src = "{{ asset('/recursos/admin/assets/js/pages/widgets.js') }}"> </script>
+{{-- <script src = "{{ asset('/recursos/admin/assets/js/pages/custom/education/student/profile.js') }}"> </script> --}}

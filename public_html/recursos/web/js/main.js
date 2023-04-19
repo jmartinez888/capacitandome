@@ -38,7 +38,6 @@ Author Email:   contact@techydevs.com
     });
 
     $(document).ready( function () {
-
         $(document).on("click", ".menu-toggler", function () {
             $(this).toggleClass('active');
             $(".main-menu").slideToggle(200);
@@ -502,9 +501,7 @@ Author Email:   contact@techydevs.com
             var modal = $(this);
             modal.find('.modal-title').text(recipient + '\'s Bio');
         });
-
     });
-
 })(jQuery);
 
 

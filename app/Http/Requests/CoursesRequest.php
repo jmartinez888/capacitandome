@@ -6,25 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CoursesRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-
             "titulo"                            => "required|min:5|max:250",
             "portada"                           => "required",
             "url_video_intro"                   => "required",
@@ -38,13 +27,12 @@ class CoursesRequest extends FormRequest
             "descripcion_larga"                 => "required",
             "fecha_inicio"                      => "required",
             "fecha_final"                       => "required",
-            "certificado"                        => "required",
+            "certificado"                       => "required",
             "recursos"                          => "required",
             "modalidad"                         => "required",
             "plataforma"                        => "required",
             "nom_certificado"                   => "required",
             "brochure"                          => "required"
-
         ];
     }
 
@@ -78,5 +66,4 @@ class CoursesRequest extends FormRequest
 
         ];
     }
-
 }

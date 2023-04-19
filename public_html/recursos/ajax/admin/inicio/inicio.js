@@ -1,4 +1,5 @@
 var tabla;
+
 $(document).ready(function () {
     listarPaginate();
 
@@ -38,11 +39,12 @@ function habilitarVenta(idventa) {
         confirmButtonColor: '#f64e60',
         confirmButtonText: 'Si, habilitar!'
     }).then((result) => {
-        if (result.isConfirmed) {
-            
+        if (result.isConfirmed) {            
             $.get(`admin/inicio/habventa/${idventa}`, function (data, status) {
                 data = JSON.parse(data);
+
                 listarPaginate();
+                
                 if (data.status == true) {
                     Swal.fire({
                         icon: 'success',
@@ -74,8 +76,7 @@ function eliminarVenta(idventa) {
         confirmButtonColor: '#f64e60',
         confirmButtonText: 'Si, habilitar!'
     }).then((result) => {
-        if (result.isConfirmed) {
-            
+        if (result.isConfirmed) {            
             $.get(`admin/inicio/elimventa/${idventa}`, function (data, status) {
                 data = JSON.parse(data);
                 listarPaginate();

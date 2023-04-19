@@ -6,21 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CoursesEditRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -71,7 +61,6 @@ class CoursesEditRequest extends FormRequest
             "modalidad.required"                         => "Debe seleccionar una modalidad.",
             "plataforma.required"                        => "Debe seleccionar una plataforma.",
             "nom_certificado.required"                   => "Debe ingresar nombre de certificado."
-
         ];
     }
 }

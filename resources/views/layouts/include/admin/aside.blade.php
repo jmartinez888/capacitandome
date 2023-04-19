@@ -175,10 +175,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
-
-
-                
+                </li>                
             </ul>
             <!--end::Menu Nav-->
         </div>
