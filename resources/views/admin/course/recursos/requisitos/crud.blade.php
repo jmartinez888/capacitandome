@@ -20,8 +20,11 @@
             <!--end::Info-->
 
             <div class="d-flex align-items-center">
-                <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a>
-                <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> INICIO</a>
+                {{-- <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a> --}}
+
+                <a href="{{ route('admin_course_list') }}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a>
+
+                <a href="{{ route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> INICIO</a>
             </div>
         </div>
     </div>
@@ -29,7 +32,6 @@
 
 @section('contenido')
     <div class="container">
-
         <div class="card card-custom">
             <div class="card-header">
                 <div class="card-title">
@@ -39,17 +41,22 @@
                             <img src="{{ asset('/storage/cursos/'.$curso->portada.'') }}" alt="image">
                         </div>
                         <!--end::Pic-->
+
                         <!--begin::Info-->
                         <div class="d-flex flex-column mr-auto">
                             <!--begin: Title-->
                             <a href="javascript:" class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1">{{$curso->titulo}}</a>
-                            <span class="text-muted font-weight-bold"><i class="far fa-calendar-alt"></i> {{$curso->fecha_inicio}} | <i class="far fa-calendar-alt"></i> {{$curso->fecha_final}}</span>
+
+                            {{-- <span class="text-muted font-weight-bold"><i class="far fa-calendar-alt"></i> {{$curso->fecha_inicio}} | <i class="far fa-calendar-alt"></i> {{$curso->fecha_final}}</span> --}}
+
+                            <span class="text-muted font-weight-bold"><i class="far fa-calendar-alt"></i> {{ date('d-m-Y', strtotime($curso->fecha_inicio)) }} | <i class="far fa-calendar-alt"></i> {{ date('d-m-Y', strtotime($curso->fecha_final)) }}</span>
                             <!--end::Title-->
                         </div>
                         <!--end::Info-->
                     </div>
                 </div>
             </div>
+
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-8">
@@ -59,36 +66,61 @@
                                     <h3 class="card-label">Lista de requisitos</h3>
                                 </div>
                             </div>
+
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="tablaRequisitos">
+                                    <table class="table table-bordered table-head-custom" id="tablaRequisitos">
                                         <thead style="">
                                             <tr>
                                                 <th style="width: 5%">N°</th>
-                                                <th style="width: 80%">TITULO</th>
-                                                <th style="width: 15%" class="text-center"><i class="fa fa-cogs"></i></th>
+                                                <th style="width: 50%">TITULO</th>
+                                                <th style="width: 40%" class="text-center">Estado</th>
+                                                <th style="width: 5%;" class="text-center"><i class="fa fa-cogs"></i></th>
                                             </tr>
                                         </thead>
+
                                         @php
                                             $autoi = 1;
                                         @endphp
+                                        
                                         <tbody>
                                             @foreach ($requisitos as $item)
                                                 <tr id="tr_{{ $item->idrequisitos }}">
-                                                    <td>{{ $autoi++ }}.</td>
-                                                    <td>{{ $item->requisitos }}</td>
-                                                    <td class="text-center">
+                                                    <td style="vertical-align: middle;">{{ $autoi++ }}.</td>
+                                                    <td style="vertical-align: middle;">{{ $item->requisitos }}</td>
+                                                    {{-- <td>{{ $item->requisito_status() }}</td> --}}
+
+                                                    @if($item->estado == 1)
+                                                        <td class="text-center" style="vertical-align: middle;">
+                                                            <a href="javascript:void(0)" onclick="cambiarEstadoRequisitos({{$item->idrequisitos}}, 0)" 
+                                                                class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
+                                                                data-placement="top" title="" data-original-title="Deshabilitar">
+                                                                Habilitado <i class="fas fa-check ml-1"></i>
+                                                            </a>
+                                                        </td>
+                                                    @else
+                                                        <td class="text-center" style="vertical-align: middle;">
+                                                            <a href="javascript:void(0)" onclick="cambiarEstadoRequisitos({{$item->idrequisitos}}, 1)" 
+                                                                class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
+                                                                data-placement="top" title="" data-original-title="Habilitar">
+                                                                Deshabilitado <i class="fas fa-times ml-1"></i>
+                                                            </a>
+                                                        </td>
+                                                    @endif
+
+                                                    <td class="text-center" style="vertical-align: middle;">
                                                         <a href="javascript:" onclick="mostrarRequisitos({{ $item->idrequisitos }})" 
                                                             class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" 
-                                                            data-placement="top" data-original-title="Editar curso"><i class="fas fa-edit p-0"></i>
+                                                            data-placement="top" data-original-title="Editar requisito"><i class="fas fa-edit p-0"></i>
                                                         </a>
-                                                        <a href="javascript:void(0)" onclick="eliminarRequisitos({{$item->idrequisitos}})" 
+                                                        {{-- <a href="javascript:void(0)" onclick="eliminarRequisitos({{$item->idrequisitos}})" 
                                                             class="btn btn-light-danger font-weight-bold btn-sm" data-toggle="tooltip" 
                                                             data-placement="top" title="" data-original-title="Eliminar curso"><i class="fas fa-trash p-0"></i>
-                                                        </a>
+                                                        </a> --}}
                                                     </td>
                                                 </tr>
                                             @endforeach
+
                                             @if (count($requisitos) == 0)
                                                 <tr><td class="text-center" colspan="3">Aún no hay requisitos registrados...</td></tr>
                                             @endif
@@ -98,6 +130,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-4">
                         <div class="row">
                             <div class="col-md-12">
@@ -108,7 +141,7 @@
                                     </div>
                                     </div>
                                     <div class="card-body">
-                                        <form action="{{route('guardEditarRequisitos')}}" method="post">
+                                        <form action="{{ route('guardEditarRequisitos')}} " method="post">
                                             @csrf
                                             <input type="hidden" name="idrequisitos" id="idrequisitos" value="">
                                             <input type="hidden" name="idcurso" id="idcurso" value="{{$curso->idcurso}}">
@@ -176,48 +209,71 @@
 
     <script>
         function mostrarRequisitos(idrequisitos) {
-        $.get("/admin/mostrarrequisitos/"+idrequisitos, function name(respuesta) {
-            respuesta = JSON.parse(respuesta);
-            $("#idrequisitos").val(respuesta.idrequisitos);
-            $('#titulo').val(respuesta.requisitos);
-        })
-    }
+            $.get("/admin/mostrarrequisitos/"+idrequisitos, function name(respuesta) {
+                respuesta = JSON.parse(respuesta);
+                
+                $("#idrequisitos").val(respuesta.idrequisitos);
+                $('#titulo').val(respuesta.requisitos);
+            })
+        }
 
-    function limpiar() {
-        $("#idrequisitos").val('');
-        $('#titulo').val('');
-        $('#titulo').removeClass('is-invalid');
-        $("#errorTitulo").html('');
-        toastr.info('Formulario reseteado.')
-    }
+        function limpiar() {
+            $("#idrequisitos").val('');
+            $('#titulo').val('');
+            $('#titulo').removeClass('is-invalid');
+            $("#errorTitulo").html('');
 
-    function eliminarRequisitos(idrequisitos) {
-        Swal.fire({
-            title: '¿Seguro que quiere eliminar este registro?',
-            text: "No se podra recuperar",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f64e60',
-            // cancelButtonColor: '#f64e60',
-            confirmButtonText: 'Si, eliminar!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.get(`/admin/eliminarrequisitos/${idrequisitos}`, function (data, status) {
-                    data = JSON.parse(data);
-                    if (data.status == true) {
-                        Swal.fire('Eliminado', '', 'success');
-                        $(`#tr_${idrequisitos}`).remove();
-                        var rowCount = $('#tablaRequisitos tr').length;
-                        if (rowCount <= 1) {
-                            $('#tablaRequisitos').append('<tr><td class="text-center" colspan="5">Aún no hay certificaciones registradas...</td></tr>');
-                        }
-                    }else{
-                        alert('Ocurrio un error, se refescara la página');
+            toastr.info('Formulario reseteado.')
+        }
+
+        // function eliminarRequisitos(idrequisitos) {
+        //     Swal.fire({
+        //         title: '¿Seguro que quiere eliminar este registro?',
+        //         text: "No se podra recuperar",
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#f64e60',
+        //         confirmButtonText: 'Si, eliminar!'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             $.get(`/admin/eliminarrequisitos/${idrequisitos}`, function (data, status) {
+        //                 data = JSON.parse(data);
+        //                 if (data.status == true) {
+        //                     Swal.fire('Eliminado', '', 'success');
+        //                     $(`#tr_${idrequisitos}`).remove();
+        //                     var rowCount = $('#tablaRequisitos tr').length;
+        //                     if (rowCount <= 1) {
+        //                         $('#tablaRequisitos').append('<tr><td class="text-center" colspan="5">Aún no hay certificaciones registradas...</td></tr>');
+        //                     }
+        //                 }else{
+        //                     alert('Ocurrio un error, se refescara la página');
+        //                     location.reload();
+        //                 }
+        //             });
+        //         }
+        //     });
+        // }
+
+        function cambiarEstadoRequisitos(idrequisitos, estado) {
+            Swal.fire({
+                title: '¿Seguro que quiere cambiar el estado de este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f64e60',
+                confirmButtonText: '¡Si, cambiar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get(`/admin/cambiarEstadoRequisitos/${idrequisitos}/${estado}`, function () {
+                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    });
+
+                    setTimeout(function() {
                         location.reload();
-                    }
-                });
-            }
-        });
-    }
+                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
+                }else{
+                    
+                }
+            });
+        }
     </script>
 @endsection

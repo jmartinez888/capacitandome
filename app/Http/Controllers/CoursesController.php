@@ -344,7 +344,7 @@ class CoursesController extends Controller {
         $curso = Curso::where('idcurso', $id)->first();
 
         if ($curso) {
-            $requisitos = Requisito::where([['idcurso', $id],['estado','1']])->distinct()->get();
+            $requisitos = Requisito::where([['idcurso', $id]])->distinct()->get();
 
             return view('admin.course.recursos.requisitos.crud', compact('curso','requisitos'));
         } else {
@@ -375,10 +375,26 @@ class CoursesController extends Controller {
         return \json_encode($requisitos);
     }
 
-    public function eliminarRequisitos($idrequisitos) {
-        $requisitos = Requisito::find($idrequisitos);
-        $requisitos->delete();
-        return json_encode(["status" => true, "message" => "Requisito eliminado."]);
+    public function cambiarEstadoRequisitos($idrequisitos, $estado) {
+        //$requisitos = Requisito::find($idrequisitos);
+        //$requisitos->delete();
+
+        $requisitos = Requisito::where('idrequisitos', $idrequisitos)->first();
+
+        // dd($requisitos);
+
+        // if ($requisitos->estado == 1) {
+        //     $requisitos->estado = 0;
+        // } else {
+        //     $requisitos->estado = 1;
+        // } 
+
+        $requisitos->estado = $estado;
+
+        $requisitos->save();
+
+        // return json_encode(["status" => true, "message" => "Estado del requisito cambiado."]);
+        return redirect()->back();
     }
     /* FIN REQUISITOS */
 

@@ -135,7 +135,7 @@ class CursoController extends Controller
     #Requisitos
     public function listCursoRequitos($id)
     {
-        $requisitos = DB::table('requisitos')->where('idcurso', '=', $id)->get();
+        $requisitos = DB::table('requisitos')->where('idcurso', '=', $id)->where('estado','=',1)->get();
         return $requisitos;
     }
 

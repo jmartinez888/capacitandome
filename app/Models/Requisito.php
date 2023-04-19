@@ -14,4 +14,16 @@ class Requisito extends Model
         return $this->belongsTo('App\Models\Curso', 'idcurso', 'idcurso');
     }
 
+    /** Estado del requisito **/
+    public function requisito_status(){
+        switch ($this->estado) {
+            case 0:
+                return 'Deshabilitado';
+            case 1:
+                return 'Habilitado';
+            default:
+                # code...
+                break;
+        }
+    }
 }
