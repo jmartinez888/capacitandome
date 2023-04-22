@@ -65,27 +65,53 @@
                                     <thead style="">
                                         <tr>
                                             <th style="width: 5%">N°</th>
-                                            <th style="width: 70%">COMUNIDAD</th>
-                                            <th style="width: 25%" class="text-center"><i class="fa fa-cogs"></i></th>
+                                            <th style="width: 55%">COMUNIDAD</th>
+                                            <th style="width: 35%">ESTADO</th>
+                                            <th style="width: 5%" class="text-center"><i class="fa fa-cogs"></i></th>
                                         </tr>
                                     </thead>
+
                                     @php
                                         $autoi = 1;
                                     @endphp
+                                    
                                     <tbody>
                                         @foreach ($docentes as $item)
                                             <tr id="tr_{{ $item->iddocente }}">
                                                 <td>{{ $autoi++ }}.</td>
                                                 <td>{{ $item->nombre." ".$item->apellidos }}</td>
+
+                                                @if($item->estado == 1)
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <a href="javascript:void(0)" 
+                                                        onclick="cambiarEstadoDocente({{ $item->iddocente }}, 0)" 
+                                                            class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
+                                                            data-placement="top" title="" data-original-title="Deshabilitar">
+                                                            Habilitado <i class="fas fa-check ml-1"></i>
+                                                        </a>
+                                                    </td>
+                                                @else
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <a href="javascript:void(0)" 
+                                                        onclick="cambiarEstadoDocente({{ $item->iddocente }}, 1)" 
+                                                            class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
+                                                            data-placement="top" title="" data-original-title="Habilitar">
+                                                            Deshabilitado <i class="fas fa-times ml-1"></i>
+                                                        </a>
+                                                    </td>
+                                                @endif
+
+                                                {{-- <td>{{ $item->estado }}</td> --}}
+
                                                 <td class="text-center">
                                                     <a href="javascript:" onclick="mostrarComunidad({{ $item->iddocente }})" 
                                                         class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" 
                                                         data-placement="top" data-original-title="Editar curso"><i class="fas fa-edit p-0"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)" onclick="eliminarComunidad({{$item->iddocente}})" 
+                                                    {{-- <a href="javascript:void(0)" onclick="eliminarComunidad({{$item->iddocente}})" 
                                                         class="btn btn-light-danger font-weight-bold btn-sm" data-toggle="tooltip" 
                                                         data-placement="top" title="" data-original-title="Eliminar curso"><i class="fas fa-trash p-0"></i>
-                                                    </a>
+                                                    </a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -98,6 +124,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-5">
                     <div class="row">
                         <div class="col-md-12">
@@ -171,7 +198,6 @@
         </div>
         <!--end::Wizard-->
     </div>
-
 </div>
 @endsection
 
@@ -179,58 +205,80 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('/recursos/admin/assets/js/pages/features/miscellaneous/toastr.js') }}"></script>
+    <script src="{{ asset('/recursos/admin/assets/js/pages/features/miscellaneous/toastr.js') }}"></script>
 
-<script>
-    function mostrarComunidad(iddocentes) {
-    $.get("/admin/mostrardocentes/"+iddocentes, function(respuesta) {
-        respuesta = JSON.parse(respuesta);
-        $("#iddocentes").val(respuesta.iddocente);
-        $('#idpersona').val(respuesta.idusuario);
-        $('#idpersona').selectpicker('refresh');
-        console.log(respuesta);
-    })
-}
+    <script>
+        function mostrarComunidad(iddocentes) {
+            $.get("/admin/mostrardocentes/"+iddocentes, function(respuesta) {
+                respuesta = JSON.parse(respuesta);
+                $("#iddocentes").val(respuesta.iddocente);
+                $('#idpersona').val(respuesta.idusuario);
+                $('#idpersona').selectpicker('refresh');
+                console.log(respuesta);
+            })
+        }
 
-function limpiar() {
-    $("#iddocentes").val('');
-    $('#idpersona').val('');
-    $('#idpersona').selectpicker('refresh');
-    $("#idpersona").removeClass('error-select');
-    $("#errorTitulo").html('');
-    toastr.info('Formulario reseteado.')
-}
+        function limpiar() {
+            $("#iddocentes").val('');
+            $('#idpersona').val('');
+            $('#idpersona').selectpicker('refresh');
+            $("#idpersona").removeClass('error-select');
+            $("#errorTitulo").html('');
 
-function eliminarComunidad(iddocentes) {
-    Swal.fire({
-        title: '¿Seguro que quiere eliminar este registro?',
-        text: "No se podra recuperar",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#f64e60',
-        confirmButtonText: 'Si, eliminar!'
-    }).then((result) => {
-        if (result.isConfirmed) {
+            toastr.info('Formulario reseteado.')
+        }
 
-            $.get(`/admin/eliminardocentes/${iddocentes}`, function (data) {
-                data = JSON.parse(data);
-                console.log(data.message);
-                if (data.status == true) {
-                    Swal.fire('Eliminado', '', 'success');
-                    $(`#tr_${iddocentes}`).remove();
-                    var rowCount = $('#tablaDocentes tr').length;
-                    if (rowCount <= 1) {
-                        $('#tablaDocentes').append('<tr><td class="text-center" colspan="5">Aún no hay registros...</td></tr>');
-                    }
+        // function eliminarComunidad(iddocentes) {
+        //     Swal.fire({
+        //         title: '¿Seguro que quiere eliminar este registro?',
+        //         text: "No se podra recuperar",
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#f64e60',
+        //         confirmButtonText: 'Si, eliminar!'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+
+        //             $.get(`/admin/eliminardocentes/${iddocentes}`, function (data) {
+        //                 data = JSON.parse(data);
+        //                 console.log(data.message);
+        //                 if (data.status == true) {
+        //                     Swal.fire('Eliminado', '', 'success');
+        //                     $(`#tr_${iddocentes}`).remove();
+        //                     var rowCount = $('#tablaDocentes tr').length;
+        //                     if (rowCount <= 1) {
+        //                         $('#tablaDocentes').append('<tr><td class="text-center" colspan="5">Aún no hay registros...</td></tr>');
+        //                     }
+        //                 }else{
+        //                     alert('Ocurrio un error, se refescara la página');
+        //                     location.reload();
+        //                 }
+        //             });
+
+        //         }
+        //     });
+        // }
+
+        function cambiarEstadoDocente(iddocente, estado) {
+            Swal.fire({
+                title: '¿Seguro que quiere cambiar el estado de este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f64e60',
+                confirmButtonText: '¡Si, cambiar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get(`/admin/cambiarEstadoDocente/${iddocente}/${estado}`, function () {
+                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    });
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
-                    alert('Ocurrio un error, se refescara la página');
-                    location.reload();
+                    
                 }
             });
-
         }
-    });
-}
-</script>
-
+    </script>
 @endsection

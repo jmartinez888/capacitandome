@@ -177,6 +177,7 @@ class CursoController extends Controller
             ->join('persona as p', 'p.idpersona', '=', 'u.idpersona')
             ->select('p.nombre', 'p.apellidos', 'p.tipo_persona', 'p.telefono', 'p.foto', 'p.direccion', 'p.carrera', 'p.perfil', 'p.experiencia_laboral')
             ->where('c.idcurso', '=', $id)
+            ->where('curso_docente_usuario.estado', '=', 1)
             ->get();
         return $docentes;
     }
@@ -239,7 +240,6 @@ class CursoController extends Controller
     #
     public function ListCursosComprados(Request $request)
     {
-
         $dataResponse   = [];
         $data           = array();
         $query          = trim($request->get('search'));

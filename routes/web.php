@@ -246,13 +246,13 @@ Route::post('/admin/comunidad', 'CoursesController@guardarEditarComunidad')->nam
 Route::get('/admin/mostrarcomunidad/{id}', 'CoursesController@mostrarComunidad')->middleware('auth');
 Route::get('/admin/cambiarEstadoComunidad/{id}/{estado}', 'CoursesController@cambiarEstadoComunidad')->middleware('auth');
 
-/*Docentes del CURSO */
+/* Docentes del CURSO */
 Route::get('/admin/docentes/{id}', 'CoursesController@docentesIndex')->name('docentesCursoId')->middleware('auth');
 Route::post('/admin/docentes', 'CoursesController@guardarEditarDocentes')->name('guardEditarDocentes')->middleware('auth');
 Route::get('/admin/mostrardocentes/{id}', 'CoursesController@mostrarDocente')->middleware('auth');
-Route::get('/admin/eliminardocentes/{id}', 'CoursesController@eliminarDocente')->middleware('auth');
-
-/****************************************************************** */
+//Route::get('/admin/eliminardocentes/{id}', 'CoursesController@eliminarDocente')->middleware('auth');
+Route::get('/admin/cambiarEstadoDocente/{iddocente}/{estado}', 'CoursesController@cambiarEstadoDocente')->middleware('auth');
+/* **************************************************************************** */
 
 
 

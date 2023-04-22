@@ -88,19 +88,16 @@ class CoursesController extends Controller {
 
     public function getAgregarSecciones($idcurso = 1)
     {
-
         $curso = Curso::with(['Secciones' => function($query) {
             return $query->where('estado', 1);
-         }])->activos()->where('idcurso', $idcurso)->first();
+        }])->activos()->where('idcurso', $idcurso)->first();     
 
         if ($curso) {
-            # code...
             return view('admin.course.create.secciones', compact('curso'));
         }else{
             // abort(404);
             return back();
         }
-
     }
 
     public function postGuardarSeccion(SeccionRequest $request)
@@ -495,7 +492,8 @@ class CoursesController extends Controller {
 
     /* DOCENTES DEL CURSO */
     public function docentesIndex($id) {
-        $curso          = Curso::where('idcurso',$id)->first();
+        $curso          = Curso::where('idcurso', $id)->first();
+
         if ($curso) {
             $personas       = User::join('persona', 'persona.idpersona', '=', 'users.idpersona')
                             ->select('users.idusuario','persona.nombre','persona.apellidos')
@@ -503,13 +501,16 @@ class CoursesController extends Controller {
             $docentes       = Docente::join('users', 'users.idusuario', '=', 'curso_docente_usuario.idusuario')
                             ->join('persona', 'persona.idpersona', '=', 'users.idpersona')
                             ->join('curso', 'curso.idcurso', '=', 'curso_docente_usuario.idcurso')
-                            ->select('curso_docente_usuario.iddocente','persona.nombre','persona.apellidos')
+                            ->select('curso_docente_usuario.iddocente','curso_docente_usuario.estado','persona.nombre','persona.apellidos')
                             ->where('curso_docente_usuario.idcurso',$id)
                             ->distinct()->get();
+
             return view('admin.course.recursos.docentes.crud', compact('curso','personas','docentes'));
         } else {
             return redirect('/admin/courses');
-        }        
+        }
+        
+        //return view('admin.course.recursos.docentes.crud', compact('curso','personas','docentes'));
     }
 
     public function guardarEditarDocentes(DocentesRequest $request) {        
@@ -540,10 +541,22 @@ class CoursesController extends Controller {
         return \json_encode($docentes);
     }
 
-    public function eliminarDocente($iddocentes) {
-        $docentes = DB::table('curso_docente_usuario')->where('iddocente',$iddocentes)->delete();
-        return json_encode(["status" => true, "message" => "Eliminado"]);
-    }
+    // public function eliminarDocente($iddocentes) {
+    //     $docentes = DB::table('curso_docente_usuario')->where('iddocente',$iddocentes)->delete();
+    //     return json_encode(["status" => true, "message" => "Eliminado"]);
+    // }
+    
+    public function cambiarEstadoDocente($iddocente, $estado) {
+        // $docente = DB::table('curso_docente_usuario')->where('iddocente',$iddocente)->first();
+        // $docente->estado = $estado;
+        // $docente->save();
+
+        DB::table('curso_docente_usuario')
+                        ->where('iddocente',$iddocente)
+                        ->update(['estado' => $estado]);
+
+        return redirect()->back();
+    }    
     /* FIN DOCENTES */
 
     // public function getDesactivarCurso($idcurso)

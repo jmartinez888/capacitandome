@@ -6,43 +6,42 @@
 @endsection
 
 @section('subheader')
-<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-        <!--begin::Info-->
-        <div class="d-flex align-items-center flex-wrap mr-1">
-            <!--begin::Page Heading-->
-            <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <!--begin::Page Title-->
-                <h5 class="text-dark font-weight-bold my-1 mr-5">
-                    CURSO: {{ $curso->titulo }} 
-                    <small class="text-muted ml-3 mr-1">
-                        <i class="far fa-calendar-alt"></i>
-                        {{ $curso->fecha_inicio  }}
-                    </small>
-                    <small class="text-muted">
-                        al
-                    </small>
-                    <small class="text-muted ml-1 mr-3">
-                        <i class="far fa-calendar-alt"></i>
-                        {{ $curso->fecha_inicio }}
-                    </small>
-                </h5>
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                        CURSO: {{ $curso->titulo }} 
+                        <small class="text-muted ml-3 mr-1">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ $curso->fecha_inicio  }}
+                        </small>
+                        <small class="text-muted">
+                            al
+                        </small>
+                        <small class="text-muted ml-1 mr-3">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ $curso->fecha_inicio }}
+                        </small>
+                    </h5>
+                </div>
+                <!--end::Page Heading-->
             </div>
-            <!--end::Page Heading-->
-        </div>
-        <!--end::Info-->
+            <!--end::Info-->
 
-        <!--begin::Toolbar-->
-        <div class="d-flex align-items-center">
-            <!--begin::Actions-->
-            <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="fa fa-home"></i> Inicio</a> 
-            <a href="{{ asset('/admin/courses') }}" class="btn btn-light-primary font-weight-bolder btn-sm"><i class="fas fa-list"></i> Lista de cursos</a>
-            <!--end::Actions-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Actions-->
+                <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="fa fa-home"></i> Inicio</a> 
+                <a href="{{ asset('/admin/courses') }}" class="btn btn-light-primary font-weight-bolder btn-sm"><i class="fas fa-list"></i> Lista de cursos</a>
+                <!--end::Actions-->
+            </div>
+            <!--end::Toolbar-->
         </div>
-        <!--end::Toolbar-->
-
     </div>
-</div>
 @endsection
 
 @section('contenido')
