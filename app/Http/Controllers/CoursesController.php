@@ -143,22 +143,22 @@ class CoursesController extends Controller {
         return json_encode($seccion);
     }
 
-    public function getEliminarSeccion($idseccion)
-    {
-        $seccion = Seccion::where('idseccion', $idseccion)->first();
-        $seccion->estado = 0;
-        $seccion->save();
+    // public function getEliminarSeccion($idseccion)
+    // {
+    //     $seccion = Seccion::where('idseccion', $idseccion)->first();
+    //     $seccion->estado = 0;
+    //     $seccion->save();
 
-        return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
-    }
+    //     return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+    // }
 
     public function getcambiarEstadoSeccion($idseccion, $estado)
     {
-        $seccion = Seccion::where('idseccion', $idseccion)->first();
-
         // $seccion->estado = 0;
         // $seccion->save();
         // return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+
+        $seccion = Seccion::where('idseccion', $idseccion)->first();
 
         $seccion->estado = $estado;
 
@@ -175,11 +175,10 @@ class CoursesController extends Controller {
     public function getAgregarClases($idseccion = 1)
     {
         $seccion = Seccion::with(['Clases' => function($query) {
-           return $query->where('estado', 1);
+           return $query;
         }])->activos()->where('idseccion', $idseccion)->first();
 
         if ($seccion) {
-            # code...
             return view('admin.course.create.clases', compact('seccion'));
         }else{
             // abort(404);
@@ -206,10 +205,7 @@ class CoursesController extends Controller {
             }else{
                 return redirect()->back()->with('error','No existe esta clase');
             }
-
-
         }else{
-
             $clase = Clase::firstOrCreate(
                 [
                     'idseccion' => $request->input('idseccion'),
@@ -224,7 +220,6 @@ class CoursesController extends Controller {
 
             return redirect()->back()->with('success','Registro creado satisfactoriamente');
         }
-
     }
 
     public function getMostrarClase($idclase)
@@ -234,13 +229,23 @@ class CoursesController extends Controller {
         return json_encode($clase);
     }
 
-    public function getEliminarClase($idclase)
+    // public function getEliminarClase($idclase)
+    // {
+    //     $clase = Clase::where('idclase', $idclase)->first();
+    //     $clase->estado = 0;
+    //     $clase->save();
+    //     return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+    // }
+
+    public function getCambiarEstadoClase($idclase, $estado)
     {
         $clase = Clase::where('idclase', $idclase)->first();
-        $clase->estado = 0;
+
+        $clase->estado = $estado;
+
         $clase->save();
 
-        return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+        return redirect()->back();
     }
 
     /************************************************************ */

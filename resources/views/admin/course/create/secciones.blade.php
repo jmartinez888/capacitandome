@@ -217,7 +217,7 @@
                                                             {{-- <a href="javascript:void(0)" onclick="desactivar({{ $seccion->idseccion }})" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash p-0"></i></a> --}}
 
                                                             @if($seccion->estado == 1)
-                                                                <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 0)" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Deshabilitar"><i class="fas fa-trash p-0"></i></a>
+                                                                <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 0)" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Deshabilitar"><i class="fas fa-times p-0"></i></a>
                                                             @else
                                                                 <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 1)" class="btn btn-light-success font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Habilitar"><i class="fas fa-check p-0"></i></a>
                                                             @endif
