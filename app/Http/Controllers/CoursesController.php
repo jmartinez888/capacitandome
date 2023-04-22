@@ -89,7 +89,7 @@ class CoursesController extends Controller {
     public function getAgregarSecciones($idcurso = 1)
     {
         $curso = Curso::with(['Secciones' => function($query) {
-            return $query->where('estado', 1);
+            return $query;
         }])->activos()->where('idcurso', $idcurso)->first();     
 
         if ($curso) {
@@ -150,6 +150,21 @@ class CoursesController extends Controller {
         $seccion->save();
 
         return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+    }
+
+    public function getcambiarEstadoSeccion($idseccion, $estado)
+    {
+        $seccion = Seccion::where('idseccion', $idseccion)->first();
+
+        // $seccion->estado = 0;
+        // $seccion->save();
+        // return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+
+        $seccion->estado = $estado;
+
+        $seccion->save();
+
+        return redirect()->back();
     }
 
     /************************************************************ */
@@ -375,6 +390,7 @@ class CoursesController extends Controller {
     public function cambiarEstadoRequisitos($idrequisitos, $estado) {
         //$requisitos = Requisito::find($idrequisitos);
         //$requisitos->delete();
+        // return json_encode(["status" => true, "message" => "Estado del requisito cambiado."]);
 
         $requisitos = Requisito::where('idrequisitos', $idrequisitos)->first();
 
@@ -382,7 +398,6 @@ class CoursesController extends Controller {
 
         $requisitos->save();
 
-        // return json_encode(["status" => true, "message" => "Estado del requisito cambiado."]);
         return redirect()->back();
     }
     /* FIN REQUISITOS */
