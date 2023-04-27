@@ -100,6 +100,21 @@ class CoursesController extends Controller {
         }
     }
 
+    // Para actualizar la tabla dinámicamente cuando se cambie el estado de alguna sección
+    public function obtenerSecciones($idcurso = 1)
+    {
+        $curso = Curso::with(['Secciones' => function($query) {
+            return $query;
+        }])->activos()->where('idcurso', $idcurso)->first();     
+
+        if ($curso) {
+            return view('admin.course.create.secciones_table', compact('curso'));
+        }else{
+            // abort(404);
+            return back();
+        }
+    }
+
     public function postGuardarSeccion(SeccionRequest $request)
     {
         $idseccion = $request->input('idseccion');
@@ -164,7 +179,8 @@ class CoursesController extends Controller {
 
         $seccion->save();
 
-        return redirect()->back();
+        // return redirect()->back();
+        return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     }
 
     /************************************************************ */
@@ -180,6 +196,20 @@ class CoursesController extends Controller {
 
         if ($seccion) {
             return view('admin.course.create.clases', compact('seccion'));
+        }else{
+            // abort(404);
+            return back();
+        }
+    }
+
+    public function obtenerClases($idseccion = 1)
+    {
+        $seccion = Seccion::with(['Clases' => function($query) {
+           return $query;
+        }])->activos()->where('idseccion', $idseccion)->first();
+
+        if ($seccion) {
+            return view('admin.course.create.clases_table', compact('seccion'));
         }else{
             // abort(404);
             return back();
@@ -245,7 +275,8 @@ class CoursesController extends Controller {
 
         $clase->save();
 
-        return redirect()->back();
+        // return redirect()->back();
+        return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     }
 
     /************************************************************ */
@@ -369,6 +400,19 @@ class CoursesController extends Controller {
         }        
     }
 
+    // Para actualizar la tabla dinámicamente cuando se cambie el estado de algún requisito
+    public function obtenerRequisitos($id) {
+        $curso = Curso::where('idcurso', $id)->first();
+
+        if ($curso) {
+            $requisitos = Requisito::where([['idcurso', $id]])->distinct()->get();
+
+            return view('admin.course.recursos.requisitos.crud_requisitos_table', compact('curso','requisitos'));
+        } else {
+            //return redirect('/admin/courses');
+        }        
+    }
+
     public function guardarEditarRequisitos(RequisitosRequest $request) {        
         $idrequisitos = $request->input('idrequisitos');
 
@@ -395,7 +439,6 @@ class CoursesController extends Controller {
     public function cambiarEstadoRequisitos($idrequisitos, $estado) {
         //$requisitos = Requisito::find($idrequisitos);
         //$requisitos->delete();
-        // return json_encode(["status" => true, "message" => "Estado del requisito cambiado."]);
 
         $requisitos = Requisito::where('idrequisitos', $idrequisitos)->first();
 
@@ -403,10 +446,10 @@ class CoursesController extends Controller {
 
         $requisitos->save();
 
-        return redirect()->back();
+        //return redirect()->back();
+        return json_encode(["status" => true, "message" => "Estado del requisito cambiado."]);
     }
     /* FIN REQUISITOS */
-
     
     /* TEMAS DEL CURSO */
     public function temasIndex($id) {
@@ -417,8 +460,20 @@ class CoursesController extends Controller {
             return view('admin.course.recursos.temas.crud', compact('curso','temas'));
         } else {
             return redirect('/admin/courses');
-        }
-        
+        }        
+    }
+
+    // Para actualizar la tabla dinámicamente cuando se cambie el estado de algún tema
+    public function obtenerTemas($id) {
+        $curso = Curso::where('idcurso', $id)->first();
+
+        if ($curso) {
+            $temas = CursoTema::where([['idcurso',$id]])->distinct()->get();
+
+            return view('admin.course.recursos.temas.crud_temas_table', compact('curso','temas'));
+        } else {
+            //return redirect('/admin/courses');
+        }        
     }
 
     public function guardarEditarTemas(TemasRequest $request) {
@@ -448,7 +503,6 @@ class CoursesController extends Controller {
     public function cambiarEstadoTemas($idtemas, $estado) {
         // $temas = CursoTema::find($idtemas);
         // $temas->delete();
-        // return json_encode(["status" => true, "message" => "Requisito eliminado."]);
 
         $tema = CursoTema::where('idcurso_tema', $idtemas)->first();
 
@@ -456,20 +510,33 @@ class CoursesController extends Controller {
 
         $tema->save();
 
-        return redirect()->back();
+        //return redirect()->back();
+        return json_encode(["status" => true, "message" => "Estado cambiado"]);
     }
     /* FIN TEMAS */
     
     /* COMUNIDAD DEL CURSO */
     public function comunidadIndex($id) {
         $curso = Curso::where('idcurso',$id)->first();
+
         if ($curso) {
             $comunidad = ComunidadEstudiante::where('idcurso',$id)->get();
             return view('admin.course.recursos.comunidad.crud', compact('curso','comunidad'));
         } else {
             return redirect('/admin/courses');
-        }
-        
+        }        
+    }
+
+    // Para actualizar la tabla dinámicamente cuando se cambie el estado de alguna comunidad
+    public function obtenerComunidad($id) {
+        $curso = Curso::where('idcurso', $id)->first();
+
+        if ($curso) {
+            $comunidad = ComunidadEstudiante::where('idcurso',$id)->get();
+            return view('admin.course.recursos.comunidad.crud_comunidad_table', compact('curso','comunidad'));
+        } else {
+            //return redirect('/admin/courses');
+        }        
     }
 
     public function guardarEditarComunidad(ComunidadRequest $request) {        
@@ -498,7 +565,6 @@ class CoursesController extends Controller {
     public function cambiarEstadoComunidad($idcomunidad_estudiantil, $estado) {
         // $comunidad = ComunidadEstudiante::find($idcomunidad_estudiantil);
         // $comunidad->delete();
-        // return json_encode(["status" => true, "message" => "Comunidad eliminada"]);
 
         $comunidad = ComunidadEstudiante::where('idcomunidad', $idcomunidad_estudiantil)->first();
 
@@ -506,7 +572,8 @@ class CoursesController extends Controller {
 
         $comunidad->save();
 
-        return redirect()->back();
+        // return redirect()->back();
+        return json_encode(["status" => true, "message" => "Comunidad eliminada"]);
     }
     /* FIN COMUNIDAD */
 
@@ -521,11 +588,34 @@ class CoursesController extends Controller {
             $docentes       = Docente::join('users', 'users.idusuario', '=', 'curso_docente_usuario.idusuario')
                             ->join('persona', 'persona.idpersona', '=', 'users.idpersona')
                             ->join('curso', 'curso.idcurso', '=', 'curso_docente_usuario.idcurso')
-                            ->select('curso_docente_usuario.iddocente','curso_docente_usuario.estado','persona.nombre','persona.apellidos')
+                            ->select('curso_docente_usuario.iddocente','curso_docente_usuario.idcurso','curso_docente_usuario.estado','persona.nombre','persona.apellidos')
                             ->where('curso_docente_usuario.idcurso',$id)
                             ->distinct()->get();
 
             return view('admin.course.recursos.docentes.crud', compact('curso','personas','docentes'));
+        } else {
+            return redirect('/admin/courses');
+        }
+        
+        //return view('admin.course.recursos.docentes.crud', compact('curso','personas','docentes'));
+    }
+
+    // Para actualizar la tabla dinámicamente cuando se cambie el estado de algún docente
+    public function obtenerDocentes($id) {
+        $curso          = Curso::where('idcurso', $id)->first();
+
+        if ($curso) {
+            $personas       = User::join('persona', 'persona.idpersona', '=', 'users.idpersona')
+                            ->select('users.idusuario','persona.nombre','persona.apellidos')
+                            ->where([['persona.estado','1'],['persona.tipo_persona','=','Docente']])->get();
+            $docentes       = Docente::join('users', 'users.idusuario', '=', 'curso_docente_usuario.idusuario')
+                            ->join('persona', 'persona.idpersona', '=', 'users.idpersona')
+                            ->join('curso', 'curso.idcurso', '=', 'curso_docente_usuario.idcurso')
+                            ->select('curso_docente_usuario.iddocente','curso_docente_usuario.idcurso','curso_docente_usuario.estado','persona.nombre','persona.apellidos')
+                            ->where('curso_docente_usuario.idcurso',$id)
+                            ->distinct()->get();
+
+            return view('admin.course.recursos.docentes.crud_docentes_table', compact('curso','personas','docentes'));
         } else {
             return redirect('/admin/courses');
         }
@@ -575,7 +665,8 @@ class CoursesController extends Controller {
                         ->where('iddocente',$iddocente)
                         ->update(['estado' => $estado]);
 
-        return redirect()->back();
+        //return redirect()->back();
+        return json_encode(["status" => true, "message" => "Eliminado"]);
     }    
     /* FIN DOCENTES */
 
@@ -598,7 +689,8 @@ class CoursesController extends Controller {
 
         $curso->save();
 
-        return redirect()->back();
+        //return redirect()->back();
+        return json_encode(["status" => true, "message" => "Se cambió el estado del registro"]);
     }
 
     // Listar estudiantes
@@ -629,7 +721,7 @@ class CoursesController extends Controller {
                                              ->orderBy('apellidos', 'DESC');
                             })
                             ->whereHas('Ventas' , function ($query) use ($idcurso){
-                                return $query->where('idcurso', $idcurso)->where('estado', '!=', 2);;
+                                return $query->where('idcurso', $idcurso)->where('estado', '!=', 2);
                             })
                             // ->get();
                             ->paginate(500);
@@ -637,7 +729,6 @@ class CoursesController extends Controller {
         $curso = Curso::with('Secciones', 'Secciones.Examenes')->where('idcurso', $idcurso)->first();
 
         return view('admin.course.estudiantes.table_lista_estudiantes', compact('estudiantes', 'curso'))->render();
-
     }
 
     /************************************************************ */
@@ -702,17 +793,14 @@ class CoursesController extends Controller {
     }
 
     // public function listarExamenUsuario($idExam, $idUser = null){
-
     //     $exam = Examen::where('idexamen', $idExam)->first();
 
     //     $estudiantes = Venta::with('User', 'User.Persona')->where('idcurso', $exam->idcurso)->get();
 
     //     return view('admin.course.estudiantes.examen_estudiante', compact('exam', 'estudiantes', 'idUser'));
-
     // }
 
     public function listarExamen($idCurso){
-
         $examen = Curso::with('Examenes', 'Examenes.Seccion')->where('idcurso', $idCurso)->first();
 
         $secciones = Seccion::where('idcurso', $idCurso)->where('estado', '1')->get();
@@ -724,11 +812,24 @@ class CoursesController extends Controller {
         }
 
         // return json_encode($examen);
+    }
 
+    // Para actualizar la tabla dinámicamente cuando se cambie el estado de algún examen
+    public function obtenerExamen($idCurso){
+        $examen = Curso::with('Examenes', 'Examenes.Seccion')->where('idcurso', $idCurso)->first();
+
+        $secciones = Seccion::where('idcurso', $idCurso)->where('estado', '1')->get();
+
+        if ($examen) {
+            return view('admin.course.examen.examen_table', compact('examen', 'secciones'));
+        }else{
+            return back();
+        }
+
+        // return json_encode($examen);
     }
 
     public function estudianteNotaExamen($idExamen){
-
         $examen = Examen::where('idexamen', $idExamen)->first();
 
         $estudiantes = Venta::with('User', 'User.Persona')->where('idcurso', $examen->idcurso)->get();
@@ -736,14 +837,11 @@ class CoursesController extends Controller {
         $resoluciones = ResolverExamen::where('idexamen', $examen->idexamen)->get();
 
         return view('admin.course.examen.notas_estudiantes', compact('examen', 'estudiantes', 'resoluciones'));
-
     }
 
     public function listaEstudianteNotaExamen(Request $request){
-
         $searh_estudiante = $request->searh_estudiante;
         $idExamen = $request->idexamen;
-
 
         $examen = Examen::where('idexamen', $idExamen)->first();
 
@@ -764,11 +862,9 @@ class CoursesController extends Controller {
         $resoluciones = ResolverExamen::where('idexamen', $examen->idexamen)->get();
 
         return view('admin.course.examen.table_notas_estudiantes', compact('examen', 'estudiantes', 'resoluciones'));
-
     }
 
     public function mostrarExamen($idExam){
-
         $exam = Examen::where('idexamen', $idExam)->first();
 
         $curso = Curso::where('idcurso', $exam->idcurso)->first();
@@ -777,21 +873,16 @@ class CoursesController extends Controller {
 
         // return json_encode($exam);
         return view('admin.course.examen.agregar_modificar_examen', compact('exam', 'curso', 'secciones'));
-
     }
 
-
     public function mostrarExamenCompleto($idExam){
-
         $exam = Examen::with('Preguntas', 'Preguntas.Alternativas', 'Preguntas.Correcta')->where('idexamen', $idExam)->first();
 
         // return json_encode($exam);
         return view('admin.course.examen.examen_completo', compact('exam'));
-
     }
 
     public function agregarExamen(ExamenRequest $request){
-
         $idexamen = $request->input('idexamen');
 
         if ($idexamen != null || $idexamen != '') {
@@ -842,17 +933,24 @@ class CoursesController extends Controller {
 
     }
 
+    // public function eliminarExamen($idExam){
+    //     $comunidad = Examen::where('idexamen', $idExam)->delete();
 
-    public function eliminarExamen($idExam){
+    //     return json_encode(['status' => true, 'message' => 'Exámen eliminado']);
+    // }
 
-        $comunidad = Examen::where('idexamen', $idExam)->delete();
+    public function cambiarEstadoExamen($idExam, $estado) {
+        $examen = Examen::where('idexamen', $idExam)->first();
 
-        return json_encode(['status' => true, 'message' => 'Exámen eliminado']);
+        $examen->estado = $estado;
 
+        $examen->save();
+
+        // return redirect()->back();
+        return json_encode(["status" => true, "message" => "Se cambió el estado del registro"]);
     }
 
     public function preguntasExamen($idExam){
-
         $preguntas = Examen::with('Preguntas')->where('idexamen', $idExam)->first();
 
         if ($preguntas) {
@@ -860,19 +958,15 @@ class CoursesController extends Controller {
         }else{
             return back();
         }
-
     }
 
     public function alternativasPregunta($idPreg){
-
         $alternativas = Pregunta::with('Alternativas')->where('idpregunta', $idPreg)->first();
 
         return json_encode($alternativas);
-
     }
 
     public function agregarPregunta(PreguntasRequest $request){
-
         $idpreg = $request->input('idpregunta');
 
         if($idpreg != null || $idpreg != ''){
@@ -967,20 +1061,16 @@ class CoursesController extends Controller {
     }
 
     public function mostrarPregunta($idPreg){
-
         $alternativas = Pregunta::with('Alternativas')->where('idpregunta', $idPreg)->first();
 
         return json_encode($alternativas);
-
     }
 
     public function eliminarPregunta($idPreg){
-
         $alternat = Alternativa::where('idpregunta', $idPreg)->delete();
 
         $pregunta = Pregunta::where('idpregunta', $idPreg)->delete();
 
         return json_encode(["status" => true, "message" => "Pregunta eliminada"]);
-
     }
 }

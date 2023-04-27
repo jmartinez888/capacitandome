@@ -4,32 +4,31 @@
 @endsection
 
 @section('subheader')
-<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-        <!--begin::Info-->
-        <div class="d-flex align-items-center flex-wrap mr-1">
-            <!--begin::Page Heading-->
-            <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <!--begin::Page Title-->
-                <h5 class="text-primary font-weight-bold my-1 mr-5">
-                    <i class="fas fa-clipboard-list"></i> TEMAS DEL CURSO
-                </h5>
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-primary font-weight-bold my-1 mr-5">
+                        <i class="fas fa-clipboard-list mr-1"></i> TEMAS DEL CURSO
+                    </h5>
+                </div>
+                <!--end::Page Heading-->
             </div>
-            <!--end::Page Heading-->
-        </div>
-        <!--end::Info-->
+            <!--end::Info-->
 
-        <div class="d-flex align-items-center">
-            <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a>
-            <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> INICIO</a>
+            <div class="d-flex align-items-center">
+                <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a>
+                <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> INICIO</a>
+            </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('contenido')
 <div class="container">
-
     <div class="card card-custom">
         <div class="card-header">
             <div class="card-title">
@@ -43,13 +42,16 @@
                     <div class="d-flex flex-column mr-auto">
                         <!--begin: Title-->
                         <a href="javascript:" class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1">{{$curso->titulo}}</a>
-                        <span class="text-muted font-weight-bold"><i class="far fa-calendar-alt"></i> {{$curso->fecha_inicio}} | <i class="far fa-calendar-alt"></i> {{$curso->fecha_final}}</span>
+                        {{-- <span class="text-muted font-weight-bold"><i class="far fa-calendar-alt"></i> {{$curso->fecha_inicio}} | <i class="far fa-calendar-alt"></i> {{$curso->fecha_final}}</span> --}}
+
+                        <span class="text-muted font-weight-bold"><i class="far fa-calendar-alt"></i> {{ date('d-m-Y', strtotime($curso->fecha_inicio)) }} | <i class="far fa-calendar-alt"></i> {{ date('d-m-Y', strtotime($curso->fecha_final)) }}</span>
                         <!--end::Title-->
                     </div>
                     <!--end::Info-->
                 </div>
             </div>
         </div>
+        
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-8">
@@ -83,7 +85,7 @@
                                                 
                                                 @if($item->estado == 1)
                                                     <td class="text-center" style="vertical-align: middle;">
-                                                        <a href="javascript:void(0)" onclick="cambiarEstadoTemas({{$item->idcurso_tema}}, 0)" 
+                                                        <a href="javascript:void(0)" onclick="cambiarEstadoTemas({{$item->idcurso_tema}}, 0, {{$item->curso->idcurso}})" 
                                                             class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                             data-placement="top" title="" data-original-title="Deshabilitar">
                                                             Habilitado <i class="fas fa-check ml-1"></i>
@@ -91,7 +93,7 @@
                                                     </td>
                                                 @else
                                                     <td class="text-center" style="vertical-align: middle;">
-                                                        <a href="javascript:void(0)" onclick="cambiarEstadoTemas({{$item->idcurso_tema}}, 1)" 
+                                                        <a href="javascript:void(0)" onclick="cambiarEstadoTemas({{$item->idcurso_tema}}, 1, {{$item->curso->idcurso}})" 
                                                             class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                             data-placement="top" title="" data-original-title="Habilitar">
                                                             Deshabilitado <i class="fas fa-times ml-1"></i>
@@ -111,6 +113,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+
                                         @if (count($temas) == 0)
                                             <tr><td class="text-center" colspan="3">Aún no hay temas registrados...</td></tr>
                                         @endif
@@ -215,38 +218,15 @@
             toastr.info('Formulario reseteado.')
         }
 
-        // function eliminartemas(idtemas) {
-        //     Swal.fire({
-        //         title: '¿Seguro que quiere eliminar este registro?',
-        //         text: "No se podra recuperar",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#f64e60',
-        //         // cancelButtonColor: '#f64e60',
-        //         confirmButtonText: 'Si, eliminar!'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
+        function listarTemas(idcurso) {            
+            $.get(`/admin/obtener/temas/${idcurso}`, function (data, textStatus, jqXHR) {
+                $("#tablaTemas").html(data);
 
-        //             $.get(`/admin/eliminartemas/${idtemas}`, function (data, status) {
-        //                 data = JSON.parse(data);
-        //                 if (data.status == true) {
-        //                     Swal.fire('Eliminado', '', 'success');
-        //                     $(`#tr_${idtemas}`).remove();
-        //                     var rowCount = $('#tablaTemas tr').length;
-        //                     if (rowCount <= 1) {
-        //                         $('#tablaTemas').append('<tr><td class="text-center" colspan="5">Aún no hay certificaciones registradas...</td></tr>');
-        //                     }
-        //                 }else{
-        //                     alert('Ocurrio un error, se refescara la página');
-        //                     location.reload();
-        //                 }
-        //             });
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
 
-        //         }
-        //     });
-        // }
-
-        function cambiarEstadoTemas(idcurso_tema, estado) {
+        function cambiarEstadoTemas(idcurso_tema, estado, idcurso) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
                 icon: 'warning',
@@ -255,13 +235,18 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/cambiarEstadoTemas/${idcurso_tema}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/cambiarEstadoTemas/${idcurso_tema}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        console.log(idcurso);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listarTemas(idcurso);
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
                     
                 }

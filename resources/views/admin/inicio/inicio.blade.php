@@ -133,9 +133,9 @@
                         </div>
                     </div>
                     <!--end::Header-->
+
                     <!--begin::Body-->
                     <div class="card-body pt-0">
-
                         @foreach ($mensajes as $mensaje)
                             <div class="mb-10">
                                 @php
@@ -156,8 +156,6 @@
                                 <p class="text-dark-50 m-0 pt-5 font-weight-normal">{{$mensaje->mensaje}}</p>
                             </div>
                         @endforeach
-                        
-
                     </div>
                     <!--end::Body-->
                 </div>

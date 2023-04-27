@@ -91,7 +91,7 @@
 
                                                     @if($item->estado == 1)
                                                         <td class="text-center" style="vertical-align: middle;">
-                                                            <a href="javascript:void(0)" onclick="cambiarEstadoRequisitos({{$item->idrequisitos}}, 0)" 
+                                                            <a href="javascript:void(0)" onclick="cambiarEstadoRequisitos({{$item->idrequisitos}}, 0, {{$item->curso->idcurso}})" 
                                                                 class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                                 data-placement="top" title="" data-original-title="Deshabilitar">
                                                                 Habilitado <i class="fas fa-check ml-1"></i>
@@ -99,7 +99,7 @@
                                                         </td>
                                                     @else
                                                         <td class="text-center" style="vertical-align: middle;">
-                                                            <a href="javascript:void(0)" onclick="cambiarEstadoRequisitos({{$item->idrequisitos}}, 1)" 
+                                                            <a href="javascript:void(0)" onclick="cambiarEstadoRequisitos({{$item->idrequisitos}}, 1, {{$item->curso->idcurso}})" 
                                                                 class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                                 data-placement="top" title="" data-original-title="Habilitar">
                                                                 Deshabilitado <i class="fas fa-times ml-1"></i>
@@ -218,6 +218,14 @@
             })
         }
 
+        function listarRequisitos(idcurso) {            
+            $.get(`/admin/obtener/requisitos/${idcurso}`, function (data, textStatus, jqXHR) {
+                $("#tablaRequisitos").html(data);
+
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
+        
         function limpiar() {
             $("#idrequisitos").val('');
             $('#titulo').val('');
@@ -227,52 +235,29 @@
             toastr.info('Formulario reseteado.')
         }
 
-        // function eliminarRequisitos(idrequisitos) {
-        //     Swal.fire({
-        //         title: '¿Seguro que quiere eliminar este registro?',
-        //         text: "No se podra recuperar",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#f64e60',
-        //         confirmButtonText: 'Si, eliminar!'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             $.get(`/admin/eliminarrequisitos/${idrequisitos}`, function (data, status) {
-        //                 data = JSON.parse(data);
-        //                 if (data.status == true) {
-        //                     Swal.fire('Eliminado', '', 'success');
-        //                     $(`#tr_${idrequisitos}`).remove();
-        //                     var rowCount = $('#tablaRequisitos tr').length;
-        //                     if (rowCount <= 1) {
-        //                         $('#tablaRequisitos').append('<tr><td class="text-center" colspan="5">Aún no hay certificaciones registradas...</td></tr>');
-        //                     }
-        //                 }else{
-        //                     alert('Ocurrio un error, se refescara la página');
-        //                     location.reload();
-        //                 }
-        //             });
-        //         }
-        //     });
-        // }
-
-        function cambiarEstadoRequisitos(idrequisitos, estado) {
+        function cambiarEstadoRequisitos(idrequisitos, estado, idcurso) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
+                text: "No se podra recuperar",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#f64e60',
-                confirmButtonText: '¡Si, cambiar!'
+                confirmButtonText: 'Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/cambiarEstadoRequisitos/${idrequisitos}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/cambiarEstadoRequisitos/${idrequisitos}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        console.log(idcurso);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listarRequisitos(idcurso);
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
-                    
                 }
             });
         }

@@ -59,7 +59,6 @@
             <div class="col-lg-12">
                 <div class="my-course-content-wrap">
                     <div class="my-course-content-body">
-
                         @if (count($secciones) != 0)
                             <div class="row">
                                 <div class="col-lg-12 mt-3 mb-5">
@@ -99,8 +98,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
-                        
+                        @endif                        
                     </div>
                 </div>
             </div><!-- end col-lg-12 -->

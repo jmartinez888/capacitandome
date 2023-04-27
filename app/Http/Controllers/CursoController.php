@@ -16,8 +16,6 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class CursoController extends Controller
 {
-
-
     public function __construct()
     {
         //$this->middleware('auth', ['only' => ['ListCursosComprados']]);
@@ -146,10 +144,10 @@ class CursoController extends Controller
         return $estudiantes;
     }
 
-    #Plan de estudios | Clases por ID SECCIón con estado 1
+    #Plan de estudios | Clases por ID SECCIÓN con estado 1 (habilitado)
     public function listSeccionClases($id)
     {
-        $secciones = DB::table('seccion')->where('idcurso', '=', $id)->get();
+        $secciones = DB::table('seccion')->where('idcurso', '=', $id)->where('estado', '=', 1)->get();
         
         $data = array();
 
@@ -237,7 +235,7 @@ class CursoController extends Controller
     #-------------- METODOS Y FUNCIONES PARA LA WEB ESTUDIANTE - LOGUEADO -------------------------
     #
     #
-    #
+    
     public function ListCursosComprados(Request $request)
     {
         $dataResponse   = [];
@@ -569,7 +567,6 @@ class CursoController extends Controller
 
     public function indexRecursoClase()
     {
-
         $cursos     = DB::table('curso')->where('estado', '=', 1)->distinct()->get();
         $secciones  = DB::table('seccion')->where('estado', '=', 1)->distinct()->get();
         $clases     = DB::table('clase')->where('estado', '=', 1)->distinct()->get();
@@ -605,6 +602,7 @@ class CursoController extends Controller
         }
         return \json_encode(array('data' => $data));
     }
+
     public function nuevoArchivo(Request $request)
     {
         date_default_timezone_set("America/Lima");

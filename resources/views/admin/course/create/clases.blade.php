@@ -13,6 +13,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <h5 class="text-dark font-weight-bold my-1 mr-5">SECCION: {{ $seccion->titulo }}</h5>
+                    {{-- <span class="text-muted font-weight-bold my-1 mr-5">CURSO: {{ $seccion->curso->titulo }}</span> --}}
                 </div>
                 <!--end::Page Heading-->
             </div>
@@ -159,31 +160,31 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($seccion->Clases as $key => $clase)
-                                                <tr id="tr_{{ $clase->idclase }}">
-                                                    <td>{{ $key+1 }}</td>
-                                                    <td>{{ $clase->titulo }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" onclick="editar({{ $clase->idclase }})" class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" data-placement="top" title="Editar">
-                                                            <i class="fas fa-edit p-0"></i>
-                                                        </a>
+                                                    <tr id="tr_{{ $clase->idclase }}">
+                                                        <td>{{ $key+1 }}</td>
+                                                        <td>{{ $clase->titulo }}</td>
+                                                        <td>
+                                                            <a href="javascript:void(0)" onclick="editar({{ $clase->idclase }})" class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                                <i class="fas fa-edit p-0"></i>
+                                                            </a>
 
-                                                        {{-- <a href="javascript:void(0)" onclick="desactivar({{ $clase->idclase }})" class="btn btn-light-danger font-weight-bold btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                                            <i class="fas fa-times p-0"></i>
-                                                        </a> --}}
-                                                    
-                                                        @if($clase->estado == 1)
-                                                            <a href="javascript:void(0)" onclick="cambiarEstadoclase({{ $clase->idclase }}, 0)" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Deshabilitar"><i class="fas fa-times p-0"></i></a>
-                                                        @else
-                                                            <a href="javascript:void(0)" onclick="cambiarEstadoclase({{ $clase->idclase }}, 1)" class="btn btn-light-success font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Habilitar"><i class="fas fa-check p-0"></i></a>
-                                                        @endif
-                                                    </td>
-                                                </tr>
+                                                            {{-- <a href="javascript:void(0)" onclick="desactivar({{ $clase->idclase }})" class="btn btn-light-danger font-weight-bold btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                                                <i class="fas fa-times p-0"></i>
+                                                            </a> --}}
+                                                        
+                                                            @if($clase->estado == 1)
+                                                                <a href="javascript:void(0)" onclick="cambiarEstadoclase({{ $clase->idclase }}, 0, {{ $clase->idseccion }})" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Deshabilitar"><i class="fas fa-times p-0"></i></a>
+                                                            @else
+                                                                <a href="javascript:void(0)" onclick="cambiarEstadoclase({{ $clase->idclase }}, 1, {{ $clase->idseccion }})" class="btn btn-light-success font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Habilitar"><i class="fas fa-check p-0"></i></a>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
 
                                                 @if (count($seccion->Clases) == 0)
-                                                <tr>
-                                                    <td class="text-center" colspan="3">Aún no hay clases creadas...</td>
-                                                </tr>
+                                                    <tr>
+                                                        <td class="text-center" colspan="3">Aún no hay clases creadas...</td>
+                                                    </tr>
                                                 @endif                                               
 
                                                 {{-- <tr>
@@ -255,13 +256,11 @@
                 $("#titulo").prop( "disabled", true );
                 $("#descripcion").prop( "disabled", true );
                 $("#url_video").prop( "disabled", true );
-
             }
         }
 
         var card = new KTCard('cardSecciones');
         function editar(idclase) {
-
             activar_form(true);
             KTApp.block(card.getSelf(), {
                 overlayColor: '#F3F6F9',type: 'loader',state: 'primary',opacity: 0.8,size: 'lg',message: 'Espere por favor...'
@@ -284,46 +283,15 @@
             $("#url_video").val('');
         }
 
-        // function desactivar(idclase) {
-        //     Swal.fire({
-        //     title: '¿Seguro que quiere eliminar este registro?',
-        //     text: "No se podra recuperar",
-        //     icon: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#f64e60',
-        //     // cancelButtonColor: '#f64e60',
-        //     confirmButtonText: 'Si, eliminar!'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {                    
-        //             $.get(`/admin/course/secciones/clases/eliminar/${idclase}`, function (data, status) {
-        //                 data = JSON.parse(data);
-        //                 console.log(data);
+        function listarClases(idseccion) {            
+            $.get(`/admin/course/secciones/obtener/clases/${idseccion}`, function (data, textStatus, jqXHR) {
+                $("#table_clases").html(data);
 
-        //                 if (data.status == true) {
-        //                     Swal.fire('Eliminado', '', 'success');                           
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
 
-        //                     $(`#tr_${idclase}`).remove();
-
-        //                     var rowCount = $('#table_clases tr').length;
-
-        //                     if (rowCount <= 1) {
-        //                         $('#table_clases').append('tr><td class="text-center" colspan="3">Aún no hay clases creadas...</td></tr>');
-        //                     }
-
-        //                 }else{
-        //                     alert('Ocurrio un error, se refescara la pagina');
-        //                     location.reload();
-        //                 }
-        //             });
-
-        //             // location.reload();
-        //         }else{
-
-        //         }
-        //     })
-        // }
-
-        function cambiarEstadoclase(idclase, estado) {
+        function cambiarEstadoclase(idclase, estado, idseccion) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
                 icon: 'warning',
@@ -332,13 +300,18 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/course/secciones/clases/cambiarEstado/${idclase}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/course/secciones/clases/cambiarEstado/${idclase}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        console.log(idseccion);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listarClases(idseccion);
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
                     
                 }

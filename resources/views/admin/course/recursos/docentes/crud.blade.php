@@ -4,32 +4,31 @@
 @endsection
 
 @section('subheader')
-<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-        <!--begin::Info-->
-        <div class="d-flex align-items-center flex-wrap mr-1">
-            <!--begin::Page Heading-->
-            <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <!--begin::Page Title-->
-                <h5 class="text-primary font-weight-bold my-1 mr-5">
-                    <i class="fas fa-chalkboard-teacher"></i> DOCENTES DEL CURSO
-                </h5>
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-primary font-weight-bold my-1 mr-5">
+                        <i class="fas fa-chalkboard-teacher mr-1"></i> DOCENTES DEL CURSO
+                    </h5>
+                </div>
+                <!--end::Page Heading-->
             </div>
-            <!--end::Page Heading-->
-        </div>
-        <!--end::Info-->
+            <!--end::Info-->
 
-        <div class="d-flex align-items-center">
-            <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a>
-            <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> INICIO</a>
+            <div class="d-flex align-items-center">
+                <a href="/admin/courses" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-book"></i> CURSO</a>
+                <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="la la-home"></i> INICIO</a>
+            </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('contenido')
 <div class="container">
-
     <div class="card card-custom">
         <div class="card-header">
             <div class="card-title">
@@ -50,6 +49,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-7">
@@ -65,7 +65,7 @@
                                     <thead style="">
                                         <tr>
                                             <th style="width: 5%">N°</th>
-                                            <th style="width: 55%">COMUNIDAD</th>
+                                            <th style="width: 55%">DOCENTE</th>
                                             <th style="width: 35%">ESTADO</th>
                                             <th style="width: 5%" class="text-center"><i class="fa fa-cogs"></i></th>
                                         </tr>
@@ -84,7 +84,7 @@
                                                 @if($item->estado == 1)
                                                     <td class="text-center" style="vertical-align: middle;">
                                                         <a href="javascript:void(0)" 
-                                                        onclick="cambiarEstadoDocente({{ $item->iddocente }}, 0)" 
+                                                        onclick="cambiarEstadoDocente({{ $item->iddocente }}, 0, {{ $item->idcurso }})" 
                                                             class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                             data-placement="top" title="" data-original-title="Deshabilitar">
                                                             Habilitado <i class="fas fa-check ml-1"></i>
@@ -93,7 +93,7 @@
                                                 @else
                                                     <td class="text-center" style="vertical-align: middle;">
                                                         <a href="javascript:void(0)" 
-                                                        onclick="cambiarEstadoDocente({{ $item->iddocente }}, 1)" 
+                                                        onclick="cambiarEstadoDocente({{ $item->iddocente }}, 1, {{ $item->idcurso }})" 
                                                             class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                             data-placement="top" title="" data-original-title="Habilitar">
                                                             Deshabilitado <i class="fas fa-times ml-1"></i>
@@ -134,14 +134,14 @@
                                   <h3 class="card-label">Seleccione un docente</h3>
                                  </div>
                                 </div>
+
                                 <div class="card-body">
                                     <form action="{{route('guardEditarDocentes')}}" method="post" id="">
                                         @csrf
                                         <input type="hidden" name="iddocentes" id="iddocentes" value="">
                                         <input type="hidden" name="idcurso" id="idcurso" value="{{$curso->idcurso}}">
                                         <div class="row">
-                                            <div class="col-md-12">                                               
-                                                                
+                                            <div class="col-md-12">
                                                 @if(Session::has('success'))                                                        
                                                     <div class="alert alert-custom alert-success fade show" role="alert">
                                                         <div class="alert-icon"><i class="la la-check"></i></div>
@@ -167,6 +167,7 @@
                                                 @endif
                                             </div>
                                         </div>
+
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group mb-4">
@@ -228,38 +229,15 @@
             toastr.info('Formulario reseteado.')
         }
 
-        // function eliminarComunidad(iddocentes) {
-        //     Swal.fire({
-        //         title: '¿Seguro que quiere eliminar este registro?',
-        //         text: "No se podra recuperar",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#f64e60',
-        //         confirmButtonText: 'Si, eliminar!'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
+        function listarDocentes(idcurso) {            
+            $.get(`/admin/obtener/docentes/${idcurso}`, function (data, textStatus, jqXHR) {
+                $("#tablaDocentes").html(data);
 
-        //             $.get(`/admin/eliminardocentes/${iddocentes}`, function (data) {
-        //                 data = JSON.parse(data);
-        //                 console.log(data.message);
-        //                 if (data.status == true) {
-        //                     Swal.fire('Eliminado', '', 'success');
-        //                     $(`#tr_${iddocentes}`).remove();
-        //                     var rowCount = $('#tablaDocentes tr').length;
-        //                     if (rowCount <= 1) {
-        //                         $('#tablaDocentes').append('<tr><td class="text-center" colspan="5">Aún no hay registros...</td></tr>');
-        //                     }
-        //                 }else{
-        //                     alert('Ocurrio un error, se refescara la página');
-        //                     location.reload();
-        //                 }
-        //             });
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
 
-        //         }
-        //     });
-        // }
-
-        function cambiarEstadoDocente(iddocente, estado) {
+        function cambiarEstadoDocente(iddocente, estado, idcurso) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
                 icon: 'warning',
@@ -268,13 +246,18 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/cambiarEstadoDocente/${iddocente}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/cambiarEstadoDocente/${iddocente}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        console.log(idcurso);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listarDocentes(idcurso);
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
                     
                 }

@@ -35,11 +35,11 @@
                                 </button>
 
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick="desactivar({{ $curso->idcurso }}, 1)" href="javascript:void(0)">Habilitado</a>
+                                    <a class="dropdown-item" onclick="cambiarEstadoCurso({{ $curso->idcurso }}, 1)" href="javascript:void(0)">Habilitado</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" onclick="desactivar({{ $curso->idcurso }}, 0)" href="javascript:void(0)">Deshabilitado</a>
+                                    <a class="dropdown-item" onclick="cambiarEstadoCurso({{ $curso->idcurso }}, 0)" href="javascript:void(0)">Deshabilitado</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" onclick="desactivar({{ $curso->idcurso }}, 2)" href="javascript:void(0)">Publicar</a>
+                                    <a class="dropdown-item" onclick="cambiarEstadoCurso({{ $curso->idcurso }}, 2)" href="javascript:void(0)">Publicar</a>
                                 </div>
                             </div>
                         </td>

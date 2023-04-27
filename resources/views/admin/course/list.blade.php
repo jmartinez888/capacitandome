@@ -316,28 +316,34 @@
             $.get(`/admin/courses/listar/${estado}?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
                 $("#table_courses").html(data);
 
-                $('[data-toggle="tooltip"]').tooltip()
+                $('[data-toggle="tooltip"]').tooltip();
             });
         }
 
-        function desactivar(idcurso, estado) {
+        function cambiarEstadoCurso(idcurso, estado) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
+                text: "No se podra recuperar",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#f64e60',
-                confirmButtonText: '¡Si, cambiar!'
+                confirmButtonText: 'Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/course/cambiarEstado/${idcurso}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/course/cambiarEstado/${idcurso}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listar_courses(1);
+                            let checked = document.getElementById('switch1');
+                            checked.checked = false;
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
-                    
                 }
             });
         }

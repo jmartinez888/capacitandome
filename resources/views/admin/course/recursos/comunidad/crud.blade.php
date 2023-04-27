@@ -12,7 +12,7 @@
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
                     <h5 class="text-primary font-weight-bold my-1 mr-5">
-                        <i class="fa fa-users"></i> COMUNIDAD ESTUDIANTIL
+                        <i class="fa fa-users mr-1"></i> COMUNIDAD ESTUDIANTIL
                     </h5>
                 </div>
                 <!--end::Page Heading-->
@@ -97,7 +97,7 @@
                                 <div class="row">
                                     <div class="col-lg-7">
                                         <div class="table-responsive mt-5">
-                                            <table class="table table-bordered table-head-custom" id="tablaCertificacion">
+                                            <table class="table table-bordered table-head-custom" id="tablaComunidad">
                                                 <thead style="">
                                                     <tr>
                                                         <th style="width: 5%">N°</th>
@@ -106,7 +106,7 @@
                                                         <th style="width: 5%" class="text-center"><i class="fa fa-cogs"></i></th>
                                                     </tr>
                                                 </thead>
-
+                                                
                                                 @php
                                                     $autoi = 1;
                                                 @endphp
@@ -116,10 +116,10 @@
                                                         <tr id="tr_{{ $item->idcomunidad }}">
                                                             <td style="vertical-align: middle;">{{ $autoi++ }}.</td>
                                                             <td style="vertical-align: middle;">{{ $item->comunidad }}</td>
-
+                                                
                                                             @if($item->estado == 1)
                                                                 <td class="text-center" style="vertical-align: middle;">
-                                                                    <a href="javascript:void(0)" onclick="cambiarEstadoComunidad({{$item->idcomunidad}}, 0)" 
+                                                                    <a href="javascript:void(0)" onclick="cambiarEstadoComunidad({{$item->idcomunidad}}, 0, {{$item->idcurso}})" 
                                                                         class="btn btn-success text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                                         data-placement="top" title="" data-original-title="Deshabilitar">
                                                                         Habilitado <i class="fas fa-check ml-1"></i>
@@ -127,14 +127,14 @@
                                                                 </td>
                                                             @else
                                                                 <td class="text-center" style="vertical-align: middle;">
-                                                                    <a href="javascript:void(0)" onclick="cambiarEstadoComunidad({{$item->idcomunidad}}, 1)" 
+                                                                    <a href="javascript:void(0)" onclick="cambiarEstadoComunidad({{$item->idcomunidad}}, 1, {{$item->idcurso}})" 
                                                                         class="btn btn-danger text-white font-weight-bold btn-sm" data-toggle="tooltip" 
                                                                         data-placement="top" title="" data-original-title="Habilitar">
                                                                         Deshabilitado <i class="fas fa-times ml-1"></i>
                                                                     </a>
                                                                 </td>
                                                             @endif
-
+                                                
                                                             <td class="text-center" style="vertical-align: middle;">
                                                                 <a href="javascript:" onclick="mostrarComunidad({{ $item->idcomunidad }})" 
                                                                     class="btn btn-light-warning font-weight-bold btn-sm" data-toggle="tooltip" 
@@ -205,37 +205,15 @@
             toastr.info('Formulario reseteado.')
         }
 
-        // function eliminarComunidad(idcomunidad) {
-        //     Swal.fire({
-        //         title: '¿Seguro que quiere eliminar este registro?',
-        //         text: "No se podra recuperar",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#f64e60',
-        //         confirmButtonText: 'Si, eliminar!'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
+        function listarComunidad(idcurso) {            
+            $.get(`/admin/obtener/comunidad/${idcurso}`, function (data, textStatus, jqXHR) {
+                $("#tablaComunidad").html(data);
 
-        //             $.get(`/admin/eliminarcomunidad/${idcomunidad}`, function (data) {
-        //                 data = JSON.parse(data);
-        //                 if (data.status == true) {
-        //                     Swal.fire('Eliminado', '', 'success');
-        //                     $(`#tr_${idcomunidad}`).remove();
-        //                     var rowCount = $('#tablaComunidad tr').length;
-        //                     if (rowCount <= 1) {
-        //                         $('#tablaComunidad').append('<tr><td class="text-center" colspan="5">Aún no hay registros...</td></tr>');
-        //                     }
-        //                 }else{
-        //                     alert('Ocurrio un error, se refescara la página');
-        //                     location.reload();
-        //                 }
-        //             });
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
 
-        //         }
-        //     });
-        // }
-
-        function cambiarEstadoComunidad(idcomunidad, estado) {
+        function cambiarEstadoComunidad(idcomunidad, estado, idcurso) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
                 icon: 'warning',
@@ -244,13 +222,18 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/cambiarEstadoComunidad/${idcomunidad}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/cambiarEstadoComunidad/${idcomunidad}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        console.log(idcurso);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listarComunidad(idcurso);
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
                     
                 }

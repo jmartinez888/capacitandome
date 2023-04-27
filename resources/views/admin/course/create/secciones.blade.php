@@ -80,7 +80,7 @@
                         <div class="card card-custom gutter-b">
                             <div class="card-header" style="min-height: 50px;">
                                 <div class="card-title">
-                                    <h3 class="card-label"><i class="fa fa-edit"></i> CREAR NUEVA SECCIÓN <!--<small>sub title</small>--> </h3>
+                                    <h3 class="card-label"><i class="fa fa-edit mr-1"></i> CREAR NUEVA SECCIÓN <!--<small>sub title</small>--> </h3>
                                 </div>
                             </div>
                             <div class="card-body">                                    
@@ -217,9 +217,9 @@
                                                             {{-- <a href="javascript:void(0)" onclick="desactivar({{ $seccion->idseccion }})" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash p-0"></i></a> --}}
 
                                                             @if($seccion->estado == 1)
-                                                                <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 0)" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Deshabilitar"><i class="fas fa-times p-0"></i></a>
+                                                                <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 0, {{ $seccion->idcurso }})" class="btn btn-light-danger font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Deshabilitar"><i class="fas fa-times p-0"></i></a>
                                                             @else
-                                                                <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 1)" class="btn btn-light-success font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Habilitar"><i class="fas fa-check p-0"></i></a>
+                                                                <a href="javascript:void(0)" onclick="cambiarEstadoSeccion({{ $seccion->idseccion }}, 1, {{ $seccion->idcurso }})" class="btn btn-light-success font-weight-bold btn-sm my-1" data-toggle="tooltip" data-placement="top" title="Habilitar"><i class="fas fa-check p-0"></i></a>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -315,47 +315,15 @@
             $("#entregable").val(2);
         }
 
-        // function desactivar(idclase) {
-        //     Swal.fire({
-        //         title: '¿Seguro que quiere eliminar este registro?',
-        //         text: "No se podra recuperar",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#f64e60',
-        //         // cancelButtonColor: '#f64e60',
-        //         confirmButtonText: 'Si, eliminar!'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-                    
-        //             $.get(`/admin/course/secciones/seccion/eliminar/${idclase}`, function (data, status) {
-        //                 data = JSON.parse(data);
+        function listarSecciones(idcurso) {            
+            $.get(`/admin/course/obtener/secciones/${idcurso}`, function (data, textStatus, jqXHR) {
+                $("#table_secciones").html(data);
 
-        //                 console.log(data);
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
 
-        //                 if (data.status == true) {
-        //                     Swal.fire('Eliminado', '', 'success');
-                            
-        //                     $(`#tr_${idclase}`).remove();
-
-        //                     var rowCount = $('#table_secciones tr').length;
-
-        //                     if (rowCount <= 1) {
-        //                         $('#table_secciones').append('tr><td class="text-center" colspan="3">Aún no hay secciones creadas...</td></tr>');
-        //                     }
-        //                 }else{
-        //                     alert('Ocurrio un error, se refescara la pagina');
-        //                     location.reload();
-        //                 }
-        //             });
-
-        //             // location.reload();
-        //         }else{
-
-        //         }
-        //     })
-        // }
-
-        function cambiarEstadoSeccion(idseccion, estado) {
+        function cambiarEstadoSeccion(idseccion, estado, idcurso) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
                 icon: 'warning',
@@ -364,13 +332,18 @@
                 confirmButtonText: '¡Si, cambiar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.get(`/admin/course/secciones/seccion/cambiarEstadoSeccion/${idseccion}/${estado}`, function () {
-                        Swal.fire('Estado cambiado', 'La página se recargará', 'success');
+                    $.get(`/admin/course/secciones/seccion/cambiarEstadoSeccion/${idseccion}/${estado}`, function (data, status) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        console.log(idcurso);
+                        if (data.status == true) {
+                            Swal.fire('Estado cambiado', '', 'success');
+                            listarSecciones(idcurso);
+                        }else{
+                            alert('Ocurrio un error, se refescara la página');
+                            location.reload();
+                        }
                     });
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1100); //Espera 1.1 segundos (1100 milisegundos) antes de recargar la página
                 }else{
                     
                 }
