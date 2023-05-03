@@ -1,22 +1,27 @@
 @extends('layouts.app_admin')
+
 @section('tituloPagina','Persona')
+
 @section('styles')
 @endsection
+
 @section('subheader')
-<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-        <div class="d-flex align-items-center flex-wrap mr-1">
-            <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <h5 class="text-dark font-weight-bold my-1 mr-5"> <i class="fa fa-edit"></i> ACTUALIZAR</h5>
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <h5 class="text-dark font-weight-bold my-1 mr-5"> <i class="fa fa-edit"></i> ACTUALIZAR</h5>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="fa fa-home"></i> Inicio</a>
+                <a href="{{route('admin_index_macurricular')}}" class="btn btn-light-primary font-weight-bolder btn-sm"><i class="fas fa-list"></i> Cursos</a>
             </div>
         </div>
-        <div class="d-flex align-items-center">
-            <a href="{{route('admin_inicio')}}" class="btn btn-light-primary font-weight-bolder btn-sm mr-2"><i class="fa fa-home"></i> Inicio</a>
-            <a href="{{route('admin_index_macurricular')}}" class="btn btn-light-primary font-weight-bolder btn-sm"><i class="fas fa-list"></i> Cursos</a>
-        </div>
     </div>
-</div>
 @endsection
+
 @section('contenido')
 <!--begin::Container-->
 <div class="container">
@@ -67,12 +72,13 @@
                             <label>Curso <span class="text-danger">*</span></label>
                             <select id="idcurso" name="idcurso" class="form-control selectpicker {{ $errors->first('idcurso') ? 'error-select' : '' }}" data-live-search="true">
                                 <option value="">Seleccione</option>
-                                @foreach ($cursos as $item)
-                                    <option value="{{ $item->idcurso }}" {{ $mallacur->idcurso == $item->idcurso ? "selected" : "" }}>
-                                        {{ $item->titulo }}
-                                    </option>
-                                @endforeach
+                                    @foreach ($cursos as $item)
+                                        <option value="{{ $item->idcurso }}" {{ $mallacur->idcurso == $item->idcurso ? "selected" : "" }}>
+                                            {{ $item->titulo }}
+                                        </option>
+                                    @endforeach
                             </select>
+
                             @if ($errors->first('idcurso'))
                                 <span class="form-text text-danger">{{ $errors->first('idcurso') }}</span>
                             @endif
@@ -112,8 +118,6 @@
         </div>
     </div>
     <!--end::Card-->
-
-
 </div>
 <!--end::Container-->
 @endsection

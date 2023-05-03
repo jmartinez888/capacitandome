@@ -323,7 +323,6 @@
         function cambiarEstadoCurso(idcurso, estado) {
             Swal.fire({
                 title: '¿Seguro que quiere cambiar el estado de este registro?',
-                text: "No se podra recuperar",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#f64e60',
