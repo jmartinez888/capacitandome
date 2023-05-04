@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="col-lg-12" id="tabla_paginate_malla">
-
+                                
                             </div>
                         </div>
                     </div>

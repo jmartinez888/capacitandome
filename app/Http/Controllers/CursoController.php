@@ -567,7 +567,7 @@ class CursoController extends Controller
 
     public function indexRecursoClase()
     {
-        $cursos     = DB::table('curso')->where('estado', '=', 1)->distinct()->get();
+        $cursos     = DB::table('curso')->whereIn('estado', [1,2])->distinct()->get();
         $secciones  = DB::table('seccion')->where('estado', '=', 1)->distinct()->get();
         $clases     = DB::table('clase')->where('estado', '=', 1)->distinct()->get();
 

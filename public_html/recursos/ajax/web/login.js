@@ -1,10 +1,11 @@
 $(document).ready(function () {
-
     $("#frm-login").on("submit", function (e) {
         var frmData = new FormData($("#frm-login")[0]);
         var u = frmData.get('usuario');
-        var c = frmData.get('password');           
+        var c = frmData.get('password');
+
         e.preventDefault();
+        
         if (u != "" && c != "") {
             login(e);
         } else {
@@ -47,10 +48,10 @@ $(document).ready(function () {
 
 })
 
-
 function login(e) {
     e.preventDefault()
     var frmData = new FormData($("#frm-login")[0]);
+    
     $.ajax({
         url: "/login",
         type: 'POST',
