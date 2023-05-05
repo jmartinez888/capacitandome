@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\PaymentGatewayServiceProvider::class,
 
+        // Pquete de Roles y Permisos
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*
