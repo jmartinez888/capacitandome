@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles; // Roles y Permisos
 
 class Usuario extends Model
 {
-
+    use HasRoles;
+    
     protected $table          = 'users';
     protected $primaryKey     = 'idusuario';
     protected $fillable       = ['idrol', 'idpersona', 'usuario', 'password','estado'];
@@ -42,5 +44,4 @@ class Usuario extends Model
     public function Comentarios(){
         return $this->hasMany('App\Models\Comentario', 'idusuario', 'idusuario');
     }
-
 }
