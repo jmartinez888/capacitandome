@@ -11,7 +11,9 @@ class Usuario extends Model
     
     protected $table          = 'users';
     protected $primaryKey     = 'idusuario';
-    protected $fillable       = ['idrol', 'idpersona', 'usuario', 'password','estado'];
+    protected $guard_name = 'web';
+    // protected $fillable       = ['idrol', 'idpersona', 'usuario', 'password','estado'];
+    protected $fillable       = ['idpersona', 'usuario', 'password','estado'];
 
     public function CursoDocenteUsuarios(){
         return $this->belongsToMany('App\Models\Curso', 'curso_docente_usuario', 'idusuario', 'idcurso');
@@ -21,9 +23,9 @@ class Usuario extends Model
         return $this->belongsTo('App\Models\Persona', 'idpersona', 'idpersona');
     }
 
-    public function Rol(){
-        return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
-    }
+    // public function Rol(){
+    //     return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
+    // }
 
     public function Recursos(){
         return $this->hasMany('App\Models\Recurso', 'idusuario', 'idusuario');

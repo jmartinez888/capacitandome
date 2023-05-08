@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Persona extends Model
 {
-
     protected $table          = 'persona';
     protected $primaryKey     = 'idpersona';
     protected $fillable       = 
@@ -32,5 +31,4 @@ class Persona extends Model
     public function Users(){
         return $this->hasMany('App\User', 'idpersona', 'idpersona');
     }
-
 }

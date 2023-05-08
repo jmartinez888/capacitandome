@@ -5,16 +5,22 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles; // Roles y Permisos
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     protected $table          = 'users';
     protected $primaryKey     = 'idusuario';
+    //protected $guard_name = 'web';
+    // protected $fillable = [
+    //     'usuario', 'password', 'idrol', 'idpersona',
+    // ];
 
     protected $fillable = [
-        'usuario', 'password', 'idrol', 'idpersona',
+        'usuario', 'password', 'idpersona',
     ];
 
     protected $hidden = [
@@ -38,9 +44,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Persona', 'idpersona', 'idpersona');
     }
 
-    public function Rol(){
-        return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
-    }
+    // public function Rol(){
+    //     return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
+    // }
 
     public function Recursos(){
         return $this->hasMany('App\Models\Recurso', 'idusuario', 'idusuario');

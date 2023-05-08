@@ -68,6 +68,7 @@ class CursoController extends Controller
             ->orderBy('idcategoria', 'desc')
             ->where('estado', '=', 1)
             ->get();
+        
         return $categorias;
     }
 
