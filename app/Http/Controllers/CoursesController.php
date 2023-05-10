@@ -441,9 +441,7 @@ class CoursesController extends Controller {
         //$requisitos->delete();
 
         $requisitos = Requisito::where('idrequisitos', $idrequisitos)->first();
-
         $requisitos->estado = $estado;
-
         $requisitos->save();
 
         //return redirect()->back();

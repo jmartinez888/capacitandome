@@ -21,7 +21,6 @@
 @section('contenido')
 <!--begin::Container-->
 <div class="container">
-
     <!--begin::Card-->
     <div class="card card-custom" id="cardPersonas">
         <div class="card-header py-3">

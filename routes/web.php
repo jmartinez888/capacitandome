@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Mailable;
 
+use App\Http\Controllers\RoleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -308,3 +310,11 @@ Route::get('resolver/examen/tiempo/{idexamen}', 'ResolverExamenController@getTie
 Route::post('resolver/examen/guardar', 'ResolverExamenController@postGuardarExamen')->middleware('auth');
 Route::post('resolver/examen/terminar', 'ResolverExamenController@postTerminarExamen')->middleware('auth');
 Route::get('/admin/prueba/lista', 'ReportesController@getListarReportes')->middleware('auth');
+
+/** ROLES Y PERMISOS **/
+Route::get('/admin/roles/lista', 'RoleController@listarRoles')->name('admin.listar.roles')->middleware('auth');
+Route::get('/admin/roles/obtener', 'RoleController@obtenerRoles')->name('admin.obtener.roles')->middleware('auth');
+Route::post('/admin/roles/create', 'RoleController@guardarEditarRol')->name('admin.crearEditar.roles')->middleware('auth');
+Route::get('/admin/roles/mostrarRol/{id}', 'RoleController@mostrarRoles')->name('admin.mostrar.roles')->middleware('auth');
+Route::get('/admin/roles/listarPermisos/{id}', 'RoleController@listarPermisos')->name('admin.listar.permisos')->middleware('auth');
+Route::get('/admin/roles/cambiarEstado/{id}/{estado}', 'RoleController@cambiarEstadoRol')->name('admin.cambiarEstado.roles')->middleware('auth');

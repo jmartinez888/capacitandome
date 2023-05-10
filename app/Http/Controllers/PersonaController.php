@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 Use App\Models\Persona;
-Use App\Models\Usuario;
+Use App\User;
+use App\Models\Usuario;
 use Hash;
 //use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -97,19 +98,13 @@ class PersonaController extends Controller {
             $persona = Persona::create($formData);
             
             if ($persona) {
-                $usuario = new Usuario();
+                $usuario = new User();
                 $usuario->idrol     = ($formData['tipo_persona'] == 'Docente') ? 1 : 2;
 
                 $usuario->idpersona = $persona->idpersona;
                 $usuario->usuario   = $formData['usuario'];
                 $usuario->password  = Hash::make($formData['clave']);
                 $usuario->estado    = 1;
-
-                //dd($usuario);
-
-                $usuario->save();
-                //dd($usuario);
-                //Usuario::create($usuario);
 
                 $tipoPersona = $formData['tipo_persona'];
                 //dd($tipoPersona);
@@ -120,6 +115,8 @@ class PersonaController extends Controller {
                 else if($tipoPersona == "estudiante") {
                     $usuario->assignRole('Estudiante');
                 }
+
+                $usuario->save();
 
                 return redirect()->route('admin_personas_create')->with('success', 'Persona registrada correctamente.'); 
             } else {
