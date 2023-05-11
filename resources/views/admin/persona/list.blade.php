@@ -4,6 +4,13 @@
 
 @section('styles')
     <link href="{{ asset('/recursos/admin/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        .fila-desactivada {
+            background-color: #f64e60;
+            color: #ffffff;
+        }
+    </style>
 @endsection
 
 @section('subheader')

@@ -21,15 +21,8 @@ class RoleSeeder extends Seeder
         // Permisos para Usuarios
         Permission::create(['name'=>'admin_personas', 'description'=>'Ver listado de usuarios'])->syncRoles([$admin]);
         Permission::create(['name'=>'admin_personas_create','description'=>'Crear nuevos usuarios'])->syncRoles([$admin]);
-        Permission::create(['name'=>'admin_personas_edit', 'description'=>'Editar usuarios'])->syncRoles([$admin, $docente]);
-        //Permission::create(['name'=>'change_status_course', 'description'=>'Cambiar estado del curso'])->syncRoles([$admin, $docente]);
-
-        // Route::get('admin/personas/delete/{id}', 'PersonaController@destroy')->name('admin_personas_delete')->middleware('auth');
-        // /* ASIGNAR ALUMNO AL CURSO */
-        // Route::get('/admin/asignar-alumno', 'PersonaController@indexAsignarAlumno')->name('admin_asignar_alumno')->middleware('auth');
-        // Route::post('/admin/guardarasigalumno', 'PersonaController@guardarAsignarAlumno')->name('admin_guardar_asig')->middleware('auth');
-        // Route::get('/admin/listasigalumno', 'PersonaController@listasigalumno')->name('admin_listasigalumno')->middleware('auth');
-        // Route::get('/admin/mostrarasigalumno/{id}', 'PersonaController@mostrarasigalumno')->name('admin_mostrarasigalumno')->middleware('auth');
+        Permission::create(['name'=>'admin_personas_edit', 'description'=>'Editar usuarios'])->syncRoles([$admin]);
+        Permission::create(['name'=>'admin_personas_cambiarEstado', 'description'=>'Cambiar estado de los usuarios'])->syncRoles([$admin]);
 
         // Permisos para los cursos
         Permission::create(['name'=>'admin_course_list', 'description'=>'Ver listado de cursos'])->syncRoles([$admin, $docente]);

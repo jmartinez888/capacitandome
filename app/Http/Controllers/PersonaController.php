@@ -38,8 +38,7 @@ class PersonaController extends Controller {
                 ->join('users as u', 'u.idpersona', '=', 'persona.idpersona')
                 ->join('rol as r', 'r.idrol', '=', 'u.idrol')
                 ->join('departamento as d', 'd.iddepartamento', '=', 'persona.iddepartamento')
-                ->select('persona.idpersona','d.departamento','persona.nombre', 'persona.apellidos','persona.dni','persona.telefono','persona.direccion','u.idrol','u.usuario')
-                ->where("persona.estado","=", 1)
+                ->select('persona.idpersona','d.departamento','persona.nombre', 'persona.apellidos','persona.dni','persona.telefono','persona.direccion','u.idrol','u.usuario', 'persona.estado')
                 ->where("persona.idpersona","!=", 1)
                 ->where("persona.apellidos","LIKE","%{$request->dni}%");
                 //->orWhere('persona.apellidos', 'like', "%{$request->dni}%");
@@ -186,13 +185,22 @@ class PersonaController extends Controller {
         //return redirect()->route('admin_personas_edit',$id)->with('success','PERSONA ACTUALIZADA SATISFACTORIAMENTE.');
     }
 
-    public function destroy($id) {
+    // public function destroy($id) {
+    //     $persona = Persona::find($id);
+    //     $persona->estado = 0;
+    //     $persona->save();
+
+    //     DB::table('users')->where('idpersona', $id)->update(['estado'=>'0']);
+    //     return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+    // }
+
+    public function cambiarEstadoPersona($id, $estado) {
         $persona = Persona::find($id);
-        $persona->estado = 0;
+        $persona->estado = $estado;
         $persona->save();
 
-        DB::table('users')->where('idpersona', $id)->update(['estado'=>'0']);
-        return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
+        DB::table('users')->where('idpersona', $id)->update(['estado'=>$estado]);
+        return json_encode(["status" => true, "message" => "Se cambió el estado del registro"]);
     }
 
     public function cambiarContrasenia(Request $request) {

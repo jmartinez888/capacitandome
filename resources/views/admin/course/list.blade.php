@@ -312,7 +312,7 @@
         }
 
         // Listar solo los cursos habilitados
-        function listar_courses(estado, page = 1) {            
+        function listar_courses(estado, page = 1) {
             $.get(`/admin/courses/listar/${estado}?page=${page}&filtro_search=${$("#buscar_curso").val()}`, function (data, textStatus, jqXHR) {
                 $("#table_courses").html(data);
 

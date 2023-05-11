@@ -264,7 +264,8 @@ Route::get('admin/personas/create', 'PersonaController@create')->name('admin_per
 Route::post('admin/personas/store', 'PersonaController@store')->name('admin_personas_store')->middleware('auth');
 Route::get('admin/personas/edit/{id}', 'PersonaController@edit')->name('admin_personas_edit')->middleware('auth');
 Route::patch('admin/personas/update/{id}', 'PersonaController@update')->name('admin_personas_update')->middleware('auth');
-Route::get('admin/personas/delete/{id}', 'PersonaController@destroy')->name('admin_personas_delete')->middleware('auth');
+//Route::get('admin/personas/delete/{id}', 'PersonaController@destroy')->name('admin_personas_delete')->middleware('auth');
+Route::get('admin/personas/cambiarEstado/{id}/{estado}', 'PersonaController@cambiarEstadoPersona')->name('admin_personas_cambiarEstado')->middleware('auth');
 
 /*INICIO*/
 Route::get('admin/inicio', 'InicioController@index')->name('admin_inicio')->middleware('auth');
