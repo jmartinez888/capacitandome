@@ -64,11 +64,6 @@ class RoleController extends Controller
         return \json_encode($rol);
     }
 
-    // public function listarPermisos($idrol) {
-    //     $rol = Role::where('id', $idrol)->first();
-    //     return \json_encode($rol);
-    // }
-
     public function listarPermisos($idrol) {
         $rol = Role::where('id', $idrol)->first();
         $permissions = Permission::all();
@@ -77,7 +72,6 @@ class RoleController extends Controller
             $permission->checked = $rol->hasPermissionTo($permission);
         }
         
-        //return \json_encode($permissions);
         return view('admin.rol.lista_permisos', compact('permissions'));
     }    
 

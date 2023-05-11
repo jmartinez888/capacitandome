@@ -89,10 +89,9 @@ class PersonaController extends Controller {
                 if (!Storage::disk('public')->exists('personas')) {
                     Storage::makeDirectory('public/personas', 0775, true);
                 }
-                // \Storage::disk('public')->put("personas/".$nvo_nombre_archivo, \File::get($archivo)); 
-                // $formData['foto'] = $nvo_nombre_archivo;
+
                 \Storage::disk('public')->put("personas/".$nvo_nombre_archivo, \File::get($archivo)); 
-                $formData['foto'] = $nvo_nombre_archivo; 
+                $formData['foto'] = $nvo_nombre_archivo;
             }
             
             $persona = Persona::create($formData);
@@ -128,10 +127,12 @@ class PersonaController extends Controller {
     }
 
     public function edit($id) {
-        $persona       = Persona::find($id);
+        $persona = Persona::find($id);
+
         if ($persona) {
             $departamentos = DB::table('departamento')->get();
             $usuario       = Usuario::where([['idpersona','=',$id]])->first();
+
             return view('admin.persona.edit', ['departamentos' => $departamentos, 'persona'=> $persona, 'usuario'=> $usuario]);
         } else {
             return \redirect()->route('admin_personas');
@@ -141,18 +142,22 @@ class PersonaController extends Controller {
     public function update(PersonaRequestUpdate $request, $id) {
         $formData   = $request->all();
         $foto       = '';
+
         if($request->hasFile('foto_actual')){
             $archivo            = $request->file('foto_actual');
             $nombre_archivo     = $archivo->getClientOriginalName();
             $extension          = explode(".", $nombre_archivo);
-            $nvo_nombre_archivo = round(microtime(true)) . '.' . end($extension);            
+            $nvo_nombre_archivo = round(microtime(true)) . '.' . end($extension);
+
             if (!Storage::disk('public')->exists('personas')) {
                 Storage::makeDirectory('public/personas', 0775, true);
             }
+
             $foto = $nvo_nombre_archivo; 
         } else {
             $foto = $formData['foto'];
         }
+
         $persona = Persona::find($id);
         $persona->tipo_persona          = $formData['tipo_persona'];
         $persona->nombre                = $formData['nombre'];
@@ -185,6 +190,7 @@ class PersonaController extends Controller {
         $persona = Persona::find($id);
         $persona->estado = 0;
         $persona->save();
+
         DB::table('users')->where('idpersona', $id)->update(['estado'=>'0']);
         return json_encode(["status" => true, "message" => "Se eliminó el registro"]);
     }
@@ -217,15 +223,12 @@ class PersonaController extends Controller {
         return json_encode(["status" => $status, "message" => $message]);
     }
 
-    //ASIGANAR ALUMNOS A UN CURSO
+    //ASIGNAR ALUMNOS A UN CURSO
     public function indexAsignarAlumno() {
         $cursos      = DB::table('curso')->distinct()->get();
         $estudiantes = DB::table('persona')->where('tipo_persona', '=', 'estudiante')->distinct()->get();
-        return view('admin.asignar-alumno.list', 
-        [
-            'cursos'     => $cursos,
-            'estudiantes' => $estudiantes
-        ]);
+
+        return view('admin.asignar-alumno.list', ['cursos' => $cursos, 'estudiantes' => $estudiantes]);
     }
 
     public function guardarAsignarAlumno(Request $request) {

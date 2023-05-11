@@ -78,6 +78,7 @@ Route::get('certificados/', function () {
 Route::post('login', 'LoginController@login')->name('login');
 Route::get('login/cerrarSesion', 'LoginController@logout')->name('cerrarSesion');
 Route::post('login/cerrarSesion', 'LoginController@logout')->name('cerrarSesionPost');
+
 Route::post('persona/cambiarclave', 'PersonaController@cambiarContrasenia')->name('cambiarclave')->middleware('auth');
 Route::get('perfil/', 'PersonaController@verperfil')->name('perfil')->middleware('auth');
 Route::post('persona/actualizarperfil', 'PersonaController@actualizarperfil')->name('actualizarperfil')->middleware('auth');
@@ -255,7 +256,7 @@ Route::get('/admin/cambiarEstadoDocente/{iddocente}/{estado}', 'CoursesControlle
 
 /* PERSONAS Y USUARIOS */
 Route::get('admin/personas', 'PersonaController@index')->name('admin_personas')->middleware('auth');
-Route::get('admin/personas/list', 'PersonaController@list')->name('admin_list')->middleware('auth');
+//Route::get('admin/personas/list', 'PersonaController@list')->name('admin_list')->middleware('auth');
 
 /*PAGINATE*/
 Route::get('admin/personas/paginate', 'PersonaController@paginatePersona')->middleware('auth');
