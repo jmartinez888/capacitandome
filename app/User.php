@@ -5,37 +5,28 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles; // Roles y Permisos
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     protected $table          = 'users';
     protected $primaryKey     = 'idusuario';
+    //protected $guard_name = 'web';
+    // protected $fillable = [
+    //     'usuario', 'password', 'idrol', 'idpersona',
+    // ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'usuario', 'password', 'idrol', 'idpersona',
+        'usuario', 'password', 'idpersona',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -53,9 +44,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Persona', 'idpersona', 'idpersona');
     }
 
-    public function Rol(){
-        return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
-    }
+    // public function Rol(){
+    //     return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
+    // }
 
     public function Recursos(){
         return $this->hasMany('App\Models\Recurso', 'idusuario', 'idusuario');
@@ -80,5 +71,4 @@ class User extends Authenticatable
     public function ResolverExamenes(){
         return $this->hasMany('App\Models\ResolverExamen', 'idusuario', 'idusuario');
     }
-
 }

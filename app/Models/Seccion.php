@@ -36,5 +36,4 @@ class Seccion extends Model
     {
         return $query->where('estado', 0);
     }
-
 }

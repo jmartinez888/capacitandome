@@ -11,8 +11,6 @@ class Entregable extends Model
     protected $primaryKey     = 'identregable';
     protected $fillable       = ['nombre', 'archivo', 'nota', 'idcurso', 'idusuario', 'idseccion', 'fecha', 'estado'];
 
-   
-
     public function Usuario(){
         return $this->belongsTo('App\Models\Seccion', 'idseccion', 'idseccion');
     }

@@ -74,7 +74,8 @@ class Curso extends Model
 
     public function scopeActivos($query)
     {
-        return $query->where('estado', 1);
+        // return $query->where('estado', 1);
+        return $query->whereIn('estado', [1, 2]);
     }
 
     public function scopeDesactivos($query)

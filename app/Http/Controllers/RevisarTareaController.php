@@ -15,22 +15,22 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class RevisarTareaController extends Controller {
-
-
-
+class RevisarTareaController extends Controller 
+{
     public function indexRevisarTarea($idcurso) {
         $curso        = Curso::where('idcurso', $idcurso)->first();
         $entregable   = DB::table('entregable')->where([['idcurso', $idcurso],['estado', 2]])->select(DB::raw('count(*) as proyFinal'))->first();
         $secciones    = DB::table('entregable')->join('seccion', 'seccion.idseccion', '=', 'entregable.idseccion')
                         ->select('seccion.idseccion','seccion.titulo')
                         ->where([['seccion.idcurso', '=', $idcurso],['entregable.estado', '=', 1]])->distinct()->get();
+                        
         return view('web.revisarTareas', compact('curso','secciones','entregable'));
     }
 
     public function registrarTarea(RegistrarTareaRequest $request) {
         date_default_timezone_set("America/Lima");
         $idusuario = Auth::user()->idusuario;
+        
         if ($request->hasFile('archivo')){
             $file           = $request->file("archivo");
             $nombrearchivo  = $file->getClientOriginalName();
@@ -40,6 +40,7 @@ class RevisarTareaController extends Controller {
                 'public/tareas', $file, $nvo_nombre_archivo
             );
         }
+
         $respt = DB::table('entregable')->insert([
             'fecha'     => date("Y/m/d H:i:s"),
             'idusuario' => $idusuario,
@@ -47,14 +48,17 @@ class RevisarTareaController extends Controller {
             'nombre'    => $request->input('titulo'),
             'archivo'   => $nvo_nombre_archivo
         ]);
+
         return redirect()->back()->with('success','Tarea registrada correctamente.');
     }
 
     public function elimarTarea($identregable) {
         $idusuario     = Auth::user()->idusuario;
         $nom_archivo   = DB::table('entregable')->where([['identregable', $identregable],['idusuario', $idusuario]])->value('archivo');
+
         Storage::delete('public/tareas/'.$nom_archivo);
         $tarea         = DB::table('entregable')->where([['identregable', $identregable],['idusuario', $idusuario]])->delete();
+        
         return json_encode(['status' => true,'data'=> $nom_archivo]);
     }
 
@@ -63,6 +67,7 @@ class RevisarTareaController extends Controller {
         $curso     = Curso::where('idcurso', $idcurso)->first();
         $seccion   = Seccion::where('idseccion', $idseccion)->first();
         $tareas    = DB::table('entregable')->where([['idusuario', '=', $idusuario],['idseccion', '=', $idseccion],['estado', '=', 1]])->orderBy('identregable', 'desc')->get();
+
         return view('web.misTareas', compact('tareas','curso','seccion'));
     }
 
@@ -123,6 +128,7 @@ class RevisarTareaController extends Controller {
         $seccion     = Seccion::where('idseccion', $idseccion)->first();
         return view('web.estudiantes',compact('curso','seccion'));
     }
+
     /* EVALUAR TAREAS : DOCENTE */
     public function listEstudiantesPaginate(Request $request, $idcurso, $idseccion) {
         $search      = $request->filtro_search;
@@ -191,6 +197,7 @@ class RevisarTareaController extends Controller {
         $entregables = DB::table('entregable')->where([['idseccion', $idseccion],['idusuario', '=', $idusuario]])->get();
         return view('web.estudiantes', compact('entregables'));
     }
+
     public function paginate($items, $perPage = 30, $page = null) {
         $page   = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items  = $items instanceof Collection ? $items : Collection::make($items);
@@ -201,8 +208,7 @@ class RevisarTareaController extends Controller {
                 ]);
     }
 
-    public function evaluarTarea(Request $request) {
-        
+    public function evaluarTarea(Request $request) {        
         $identregable = $request->input('identregable');
         $idusuario    = $request->input('idusuario');
         $idseccion    = $request->input('idseccion');

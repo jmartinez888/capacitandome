@@ -64,38 +64,28 @@ function listar() {
     });
 }
 
-function desactivar(idpersona) {
+function cambiarEstadoPersona(idpersona, estado) {
     Swal.fire({
-        title: '¿Seguro que quiere eliminar este registro?',
-        text: "No se podra recuperar",
+        title: '¿Seguro que quiere cambiar el estado de este registro?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#f64e60',
-        // cancelButtonColor: '#f64e60',
-        confirmButtonText: 'Si, eliminar!'
+        confirmButtonText: 'Si, cambiar!'
     }).then((result) => {
         if (result.isConfirmed) {
-            
-            $.get(`admin/personas/delete/${idpersona}`, function (data, status) {
+            $.get(`admin/personas/cambiarEstado/${idpersona}/${estado}`, function (data, status) {
                 data = JSON.parse(data);
-                tabla.ajax.reload();
+                console.log(data);
+
                 if (data.status == true) {
-                    Swal.fire('Eliminado', '', 'success');
-                    var rowCount = $('#table_secciones tr').length;
-
-                    if (rowCount <= 1) {
-                        $('#table_secciones').append('tr><td class="text-center" colspan="3">Aún no hay cursos registrados...</td></tr>');
-                    }
-
+                    Swal.fire('Estado cambiado', '', 'success');
+                    listarPaginate();
                 }else{
                     alert('Ocurrio un error, se refescara la página');
                     location.reload();
                 }
-
             });
-
         }else{
-
         }
     });
 }

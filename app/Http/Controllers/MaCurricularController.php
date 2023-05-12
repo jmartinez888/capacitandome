@@ -7,8 +7,7 @@ use App\Models\MallaCurricular;
 use App\Models\Curso;
 use App\Http\Requests\MaCurricularRequest;
 
-class MaCurricularController extends Controller {
-    
+class MaCurricularController extends Controller {    
     public function index(){
         return \view('admin.malla-curricular.listar');
     }
@@ -20,11 +19,12 @@ class MaCurricularController extends Controller {
                             ->where('curso.titulo', 'like', "%{$filtro_search}%")->orderBy('malla_curricular.idmalla_curricular', 'desc')
                             ->distinct()
                             ->paginate(10);
+        
         return \view('admin.malla-curricular.tabla_paginate_malla', compact('mallacurricular','filtro_search'))->render();
     }
 
     public function create() {
-        $cursos = Curso::where('estado',1)->get();
+        $cursos = Curso::whereIn('estado', [1, 2])->get();
         return \view('admin.malla-curricular.crear', compact('cursos'));
     }
 
@@ -34,10 +34,10 @@ class MaCurricularController extends Controller {
         $trabajo_final  = $request->input('trabajo_final');
 
         $suma = $examen_final + $trabajo_final;
-        if ($suma == 100) {
 
+        if ($suma == 100 && $examen_final >= 0 && $trabajo_final >= 0) {
             $mallacur   = MallaCurricular::where([['estado','=',1],['idcurso','=',$idcurso]])->first();
-            $curso      = Curso::where([['estado','=',1],['idcurso','=',$idcurso]])->first();
+            $curso      = Curso::whereIn('estado', [1,2])->where('idcurso',$idcurso)->first();
 
             if (empty($mallacur)) {                
                 $maCurr = new MallaCurricular();
@@ -48,15 +48,14 @@ class MaCurricularController extends Controller {
                 return redirect()->route('admin_index_macurricular')->with('success','Se ha registrado correctamente los puntajes asignados.');
             } else {
                 return redirect()->back()->with('error','YA EXISTE UN PUNTAJE ASIGNADO PARA EL CURSO : '.$curso->titulo.' | Examen = '.$mallacur->puntaje_examen_final.'% , Trabajo = '.$mallacur->puntaje_trabajo_final.'%');
-            }
-            
+            }            
         } else {
-            return redirect()->back()->with('error','EL PUNTAJE EXAMEN FINAL + PUNTAJE TRABAJO FINAL DEBE SER IGUAL AL 100%. VUELVA A INGRESAR CORRECTAMENTE.');
+            return redirect()->back()->with('error','EL PUNTAJE EXAMEN FINAL + PUNTAJE TRABAJO FINAL DEBE SER IGUAL AL 100%, Y NO DEBEN SER VALORES NEGATIVOS. VUELVA A INGRESAR CORRECTAMENTE.');
         }
     }
 
     public function show($idmallaCurricular) {
-        $cursos     = Curso::where('estado',1)->get();
+        $cursos     = Curso::whereIn('estado', [1,2])->get();
         $mallacur   = MallaCurricular::where([['idmalla_curricular','=',$idmallaCurricular]])->first();
         return \view('admin.malla-curricular.editar', compact('cursos','mallacur'));
     }
@@ -67,8 +66,8 @@ class MaCurricularController extends Controller {
         $trabajo_final  = $request->input('trabajo_final');
 
         $suma = $examen_final + $trabajo_final;
-        if ($suma == 100) {
 
+        if ($suma == 100 && $examen_final >= 0 && $trabajo_final >= 0) {
             $maCurr   = MallaCurricular::where([['idmalla_curricular','=',$id]])->first();
             if (!empty($maCurr)) {
                 $maCurr->idcurso               = $idcurso;
@@ -78,10 +77,9 @@ class MaCurricularController extends Controller {
                 return redirect()->route('admin_index_macurricular')->with('success','Se ha actualzado correctamente los puntajes asignados.');
             } else {
                 return redirect()->back()->with('error','Asegurese de editar un registro correcto. Vuelva a recargar la página.'.$id);
-            }
-            
+            }            
         } else {
-            return redirect()->back()->with('error','EL PUNTAJE EXAMEN FINAL + PUNTAJE TRABAJO FINAL DEBE SER IGUAL AL 100%. VUELVA A INGRESAR CORRECTAMENTE.');
+            return redirect()->back()->with('error','EL PUNTAJE EXAMEN FINAL + PUNTAJE TRABAJO FINAL DEBE SER IGUAL AL 100%, Y NO DEBEN SER VALORES NEGATIVOS. VUELVA A INGRESAR CORRECTAMENTE.');
         }
     }
 

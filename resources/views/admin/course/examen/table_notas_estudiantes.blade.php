@@ -1,5 +1,4 @@
 @if ($examen)
-
     <div class="table-responsive">
         <table class="table table-hover table-bordered table-sm">
             <thead class="table-primary">
@@ -12,16 +11,15 @@
             </thead>
             <tbody>
                 @if (count($estudiantes) > 0)
-                    @foreach ($estudiantes as $key => $alumno)
-    
+                    @foreach ($estudiantes as $key => $alumno)    
                         @php
                             $fecha  = "";
                             $nota   = null;
                         @endphp
     
                         <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $alumno->Persona->apellidos }}, {{ $alumno->Persona->nombre }}</td>
+                            <td class="align-middle">{{ $key + 1 }}</td>
+                            <td class="align-middle">{{ $alumno->Persona->apellidos }}, {{ $alumno->Persona->nombre }}</td>
                             @php
                                 if(count($resoluciones) > 0){
                                     foreach ($resoluciones as $key => $res) {
@@ -32,14 +30,14 @@
                                     }
                                 }
                             @endphp
-                            <td>
+                            <td class="align-middle">
                                 @if ($fecha == "")
                                     <small class="text-danger"> --/--/---- </small>
                                 @else
                                     {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td class="text-center align-middle">
                                 @if ($nota == null)
                                     0 <br><small class="text-danger">(No Resuelto)</small>
                                 @else
@@ -56,13 +54,10 @@
             </tbody>
         </table>
     </div>
-
 @else
-
     <div class="modal-body">
         <div class="col-md-12 mb-4">
             <h5 class=" text-center m-0">No se encontró un examen con el id seleccionado</h5>
         </div>
     </div>
-
 @endif

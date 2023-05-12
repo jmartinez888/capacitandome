@@ -15,11 +15,11 @@
         <tbody>
             @foreach ($mallacurricular as $index => $item)
                 <tr id="tr_{{$item->idmalla_curricular}}">
-                    <td>{{($index+1) }}.</td>                                        
-                    <td><strong>{{ $item->titulo}}</strong></td>
-                    <td>{{ $item->puntaje_trabajo_final }}%</td>
-                    <td>{{ $item->puntaje_examen_final }}%</td>
-                    <td class="text-center">
+                    <td class="align-middle">{{($index+1) }}.</td>                                        
+                    <td class="align-middle"><strong>{{ $item->titulo}}</strong></td>
+                    <td class="align-middle">{{ $item->puntaje_examen_final }}%</td>
+                    <td class="align-middle">{{ $item->puntaje_trabajo_final }}%</td>
+                    <td class="text-center align-middle">
                         <a href="{{route('admin_show_macurricular',[$item->idmalla_curricular])}}" 
                             class="btn btn-light-info font-weight-bold btn-sm" data-toggle="tooltip" 
                             data-placement="top" data-original-title="Editar Servicio"><i class="fas fa-edit p-0"></i>
@@ -42,5 +42,3 @@
     </table>
 </div>
 {!! $mallacurricular->links('vendor.pagination.paginate-admin') !!}
-
-                                                

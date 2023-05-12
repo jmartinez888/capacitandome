@@ -1,11 +1,9 @@
 $(document).ready(function () {
-
     $("#select-idcategoria").change(function () {
         if ($(this).val() != "") {
             location.href = '/cursos?idcategoria='+$(this).val();
         }
     })
-
 })
 
 function enviarMensaje(nom_apell, correo, telefono, mensaje) {

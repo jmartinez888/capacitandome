@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles; // Roles y Permisos
 
 class Usuario extends Model
 {
-
+    use HasRoles;
+    
     protected $table          = 'users';
     protected $primaryKey     = 'idusuario';
-    protected $fillable       = ['idrol', 'idpersona', 'usuario', 'password','estado'];
+    protected $guard_name = 'web';
+    // protected $fillable       = ['idrol', 'idpersona', 'usuario', 'password','estado'];
+    protected $fillable       = ['idpersona', 'usuario', 'password','estado'];
 
     public function CursoDocenteUsuarios(){
         return $this->belongsToMany('App\Models\Curso', 'curso_docente_usuario', 'idusuario', 'idcurso');
@@ -19,9 +23,9 @@ class Usuario extends Model
         return $this->belongsTo('App\Models\Persona', 'idpersona', 'idpersona');
     }
 
-    public function Rol(){
-        return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
-    }
+    // public function Rol(){
+    //     return $this->belongsTo('App\Models\Rol', 'idrol', 'idrol');
+    // }
 
     public function Recursos(){
         return $this->hasMany('App\Models\Recurso', 'idusuario', 'idusuario');
@@ -42,5 +46,4 @@ class Usuario extends Model
     public function Comentarios(){
         return $this->hasMany('App\Models\Comentario', 'idusuario', 'idusuario');
     }
-
 }

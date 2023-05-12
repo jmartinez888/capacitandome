@@ -16,8 +16,6 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class CursoController extends Controller
 {
-
-
     public function __construct()
     {
         //$this->middleware('auth', ['only' => ['ListCursosComprados']]);
@@ -70,6 +68,7 @@ class CursoController extends Controller
             ->orderBy('idcategoria', 'desc')
             ->where('estado', '=', 1)
             ->get();
+        
         return $categorias;
     }
 
@@ -128,28 +127,28 @@ class CursoController extends Controller
     #¿Qué aprenderás?
     public function listCursoTemas($id)
     {
-        $cursoTema = DB::table('curso_temas')->where('idcurso', '=', $id)->get();
+        $cursoTema = DB::table('curso_temas')->where('idcurso', '=', $id)->where('estado', '=', 1)->get();
         return $cursoTema;
     }
 
     #Requisitos
     public function listCursoRequitos($id)
     {
-        $requisitos = DB::table('requisitos')->where('idcurso', '=', $id)->get();
+        $requisitos = DB::table('requisitos')->where('idcurso', '=', $id)->where('estado','=',1)->get();
         return $requisitos;
     }
 
     #¿Para quien va dirigido este curso?
     public function listCursoComunidad($id)
     {
-        $estudiantes = DB::table('comunidad_estudiante')->where('idcurso', '=', $id)->get();
+        $estudiantes = DB::table('comunidad_estudiante')->where('idcurso', '=', $id)->where('estado','=',1)->get();
         return $estudiantes;
     }
 
-    #Plan de estudios | Clases por ID SECCIón con estado 1
+    #Plan de estudios | Clases por ID SECCIÓN con estado 1 (habilitado)
     public function listSeccionClases($id)
     {
-        $secciones = DB::table('seccion')->where('idcurso', '=', $id)->get();
+        $secciones = DB::table('seccion')->where('idcurso', '=', $id)->where('estado', '=', 1)->get();
         
         $data = array();
 
@@ -177,6 +176,7 @@ class CursoController extends Controller
             ->join('persona as p', 'p.idpersona', '=', 'u.idpersona')
             ->select('p.nombre', 'p.apellidos', 'p.tipo_persona', 'p.telefono', 'p.foto', 'p.direccion', 'p.carrera', 'p.perfil', 'p.experiencia_laboral')
             ->where('c.idcurso', '=', $id)
+            ->where('curso_docente_usuario.estado', '=', 1)
             ->get();
         return $docentes;
     }
@@ -236,10 +236,9 @@ class CursoController extends Controller
     #-------------- METODOS Y FUNCIONES PARA LA WEB ESTUDIANTE - LOGUEADO -------------------------
     #
     #
-    #
+    
     public function ListCursosComprados(Request $request)
     {
-
         $dataResponse   = [];
         $data           = array();
         $query          = trim($request->get('search'));
@@ -569,8 +568,7 @@ class CursoController extends Controller
 
     public function indexRecursoClase()
     {
-
-        $cursos     = DB::table('curso')->where('estado', '=', 1)->distinct()->get();
+        $cursos     = DB::table('curso')->whereIn('estado', [1,2])->distinct()->get();
         $secciones  = DB::table('seccion')->where('estado', '=', 1)->distinct()->get();
         $clases     = DB::table('clase')->where('estado', '=', 1)->distinct()->get();
 
@@ -605,6 +603,7 @@ class CursoController extends Controller
         }
         return \json_encode(array('data' => $data));
     }
+
     public function nuevoArchivo(Request $request)
     {
         date_default_timezone_set("America/Lima");

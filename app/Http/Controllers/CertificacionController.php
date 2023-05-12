@@ -20,11 +20,13 @@ class CertificacionController extends Controller {
                      ->select('c.idcurso','c.titulo',DB::raw('count(venta.idcurso) as cursos'))
                      ->where([['c.plan','=','pago'],['venta.estado','=','1']])
                     ->groupBy('c.idcurso','c.titulo')->get();
+        
         return view('admin.certificados.listar', ['curso' => $curso]);
     }
 
     public function indexCertificado($idcurso, Request $request) {
         $curso     = Curso::where('idcurso', '=', $idcurso)->first();
+
         if (!empty($curso)) {
             $mallacurricular = MallaCurricular::where('idcurso', $idcurso)->first();
             return view('admin.certificados.certificacionDetalle', ['curso' => $curso,'idcurso' => $idcurso, 'mallacurricular'=> $mallacurricular]);
@@ -81,15 +83,12 @@ class CertificacionController extends Controller {
     }
 
     public function agregarCertificado(CertificadoRequest $request){
-
         $certificado_ruta = "";
 
         $curso = Curso::where('idcurso', $request->input('idCurso'))->first();
         if($curso){
-
             $user = Venta::where('idcurso', $request->input('idCurso'))->where('idusuario', $request->input('idUser'))->first();
             if($user){
-
                 $cert = Certificado::where('idcurso', $request->input('idCurso'))->where('idusuario', $request->input('idUser'))->first();
 
                 if($cert){
@@ -102,7 +101,6 @@ class CertificacionController extends Controller {
                     $certificado_nombre =  $certificado->getClientOriginalName() . '-' . rand() . '.' . $certificado->getClientOriginalExtension();
                     $certificado_ruta   = '/certificados';
                     $certificado_ruta   = Storage::disk('public')->put($certificado_ruta ,  $certificado);
-
                 }else{
                     return false;
                 }
@@ -138,7 +136,6 @@ class CertificacionController extends Controller {
         }
 
     }
-
 
     /*  VISTAS PARA LA WEB CERTIFICADOS */
     public function indexCertificadosWeb() {
